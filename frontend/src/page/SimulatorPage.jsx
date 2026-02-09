@@ -30,7 +30,7 @@ const PREV = {
 
 const createUserId = () => `user_${Math.random().toString(36).slice(2, 8)}`;
 
-export default function SimulatorPage({ onRefresh, onScreenChange }) {
+export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency }) {
   const [screen, setScreen] = useState("home");
   const [history, setHistory] = useState(["home"]);
   const [loading, setLoading] = useState(false);
@@ -41,6 +41,8 @@ export default function SimulatorPage({ onRefresh, onScreenChange }) {
   useEffect(() => {
     const prevScreen = prevScreenRef.current;
     prevScreenRef.current = screen;
+
+    // exit -> home 으로 복귀했을 때만 enter 이벤트 기록
     if (!(prevScreen === "exit" && screen === "home")) return;
 
     userIdRef.current = createUserId();
@@ -66,30 +68,39 @@ export default function SimulatorPage({ onRefresh, onScreenChange }) {
     setLoading(true);
 
     let latency = 300; // default latency
-    if (screen === "home" && next === "product") latency = 600; // loading product details
-    if (screen === "cart" && next === "success") latency = 2800; // processing payment
+    if (screen === "home" && next === "product") latency = 600;
+    if (screen === "cart" && next === "success") latency = 2800;
 
     await new Promise((r) => setTimeout(r, latency));
 
-    // Navigate first (optimistic), then log the event in the background
+    // UI 먼저 이동
     setHistory((prev) => [...prev, next]);
     setScreen(next);
     startTimeRef.current = Date.now();
 
-    postEvent({
+    // 실제 HTTP latency 측정
+    const start = performance.now();
+    const res = await postEvent({
       user_id: userIdRef.current,
       screen: screen,
       next_screen: next,
       event_type: "navigate",
       user_think_time: thinkTime,
-      system_latency: latency,
+      system_latency: 0,
       timestamp: new Date().toISOString(),
-    })
-      .then(() => onRefresh && onRefresh())
-      .catch((err) => {
-        console.error("Failed to post event", err);
-      })
-      .finally(() => setLoading(false));
+    });
+    const elapsed = performance.now() - start;
+
+    if (onSendLatency && res?.data?.id) {
+      onSendLatency({
+        type: "latency",
+        event_id: res.data.id,
+        client_latency_ms: Math.round(elapsed),
+      });
+    }
+
+    onRefresh && onRefresh();
+    setLoading(false);
   };
 
   const handleBack = () => {
@@ -126,12 +137,13 @@ export default function SimulatorPage({ onRefresh, onScreenChange }) {
     }
   };
 
-  const handleExit = () => {
+  const handleExit = async () => {
     setHistory(["exit"]);
     setScreen("exit");
     startTimeRef.current = Date.now();
 
-    postEvent({
+    const start = performance.now();
+    const res = await postEvent({
       user_id: userIdRef.current,
       screen: screen,
       next_screen: "exit",
@@ -139,7 +151,18 @@ export default function SimulatorPage({ onRefresh, onScreenChange }) {
       user_think_time: 0,
       system_latency: 0,
       timestamp: new Date().toISOString(),
-    }).then(() => onRefresh && onRefresh());
+    });
+    const elapsed = performance.now() - start;
+
+    if (onSendLatency && res?.data?.id) {
+      onSendLatency({
+        type: "latency",
+        event_id: res.data.id,
+        client_latency_ms: Math.round(elapsed),
+      });
+    }
+
+    onRefresh && onRefresh();
   };
 
   return (

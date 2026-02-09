@@ -11,9 +11,11 @@ router = APIRouter(prefix="/events", tags=["events"])
 
 
 @router.post("/", response_model=EventOut)
-def create_event(event: EventCreate, db: Session = Depends(get_db)):
+async def create_event(event: EventCreate, db: Session = Depends(get_db)):
     db_event = EventModel(**event.model_dump())
     db.add(db_event)
     db.commit()
+    summary = funnel_summary(db)
+    await manager.broadcast(summary)
     db.refresh(db_event)
     return db_event
