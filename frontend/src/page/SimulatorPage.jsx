@@ -30,7 +30,7 @@ const PREV = {
 
 const createUserId = () => `user_${Math.random().toString(36).slice(2, 8)}`;
 
-export default function SimulatorPage({ onRefresh }) {
+export default function SimulatorPage({ onRefresh, onScreenChange }) {
   const [screen, setScreen] = useState("home");
   const [history, setHistory] = useState(["home"]);
   const [loading, setLoading] = useState(false);
@@ -54,6 +54,10 @@ export default function SimulatorPage({ onRefresh }) {
       timestamp: new Date().toISOString(),
     }).then(() => onRefresh && onRefresh());
   }, [screen, onRefresh]);
+
+  useEffect(() => {
+    if (onScreenChange) onScreenChange(screen);
+  }, [screen, onScreenChange]);
 
   const handleNavigate = async (next) => {
     if (loading || next === screen) return;
@@ -129,7 +133,7 @@ export default function SimulatorPage({ onRefresh }) {
 
     postEvent({
       user_id: userIdRef.current,
-      screen: "exit",
+      screen: screen,
       next_screen: "exit",
       event_type: "exit",
       user_think_time: 0,

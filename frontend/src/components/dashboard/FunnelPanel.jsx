@@ -1,7 +1,8 @@
 import FunnelRow from "./FunnelRow";
 import InsightBox from "./InsightBox";
+import DropoffChart from "./DropoffChart";
 
-export default function FunnelPanel({ data, loading, error }) {
+export default function FunnelPanel({ data, loading, error, currentScreen }) {
   const steps = data?.steps || [];
   const kpis = data?.kpis || {};
   const worstLabel = kpis.worst_step
@@ -20,24 +21,31 @@ export default function FunnelPanel({ data, loading, error }) {
       )}
 
       {!loading && !error && steps.length > 0 && (
-        <div className="kpi-row">
-          <div className="kpi-card">
-            <div className="kpi-label">Total Users</div>
-            <div className="kpi-value">{kpis.total_users ?? 0}</div>
+        <section className="kpi-panel">
+          <div className="kpi-title">KPI</div>
+          <div className="kpi-row">
+            <div className="kpi-card">
+              <div className="kpi-label">Total Users</div>
+              <div className="kpi-value">{kpis.total_users ?? 0}</div>
+            </div>
+            <div className="kpi-card">
+              <div className="kpi-label">Overall Conversion</div>
+              <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
+            </div>
+            <div className="kpi-card">
+              <div className="kpi-label">Exit Count</div>
+              <div className="kpi-value">{exitCount}</div>
+            </div>
+            <div className="kpi-card">
+              <div className="kpi-label">Worst Step</div>
+              <div className="kpi-value">{worstLabel}</div>
+            </div>
           </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Overall Conversion</div>
-            <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
-          </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Exit Count</div>
-            <div className="kpi-value">{exitCount}</div>
-          </div>
-          <div className="kpi-card">
-            <div className="kpi-label">Worst Step</div>
-            <div className="kpi-value">{worstLabel}</div>
-          </div>
-        </div>
+        </section>
+      )}
+
+      {!loading && !error && steps.length > 0 && (
+        <DropoffChart steps={steps} />
       )}
 
       {!loading && !error && steps.length > 0 && (
@@ -49,6 +57,7 @@ export default function FunnelPanel({ data, loading, error }) {
           key={step.name ?? step.step ?? idx}
           index={idx + 1}
           step={step}
+          isActive={currentScreen === step.step}
         />
       ))}
 

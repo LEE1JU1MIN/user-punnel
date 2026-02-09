@@ -15,10 +15,7 @@ def funnel_summary(db: Session = Depends(get_db)):
 
     exit_count = (
         db.query(EventModel.user_id)
-        .filter(
-            EventModel.screen == "exit",
-            EventModel.event_type == "exit"
-        )
+        .filter(EventModel.event_type == "exit")
         .distinct()
         .count()
     )
@@ -30,15 +27,32 @@ def funnel_summary(db: Session = Depends(get_db)):
         .count()
     )
 
-    worst_step = None
-    worst_latency = -1
+    counts_by_step = {}
     for step in steps:
-        count = (
+        counts_by_step[step] = (
             db.query(EventModel.user_id)
             .filter(EventModel.screen == step)
             .distinct()
             .count()
         )
+
+    worst_step = None
+    worst_latency = -1
+    exits_by_step = {}
+    for step in steps:
+        exits_by_step[step] = (
+            db.query(EventModel.user_id)
+            .filter(
+                EventModel.event_type == "exit",
+                EventModel.screen == step
+            )
+            .distinct()
+            .count()
+        )
+
+    for idx, step in enumerate(steps):
+        count = counts_by_step.get(step, 0)
+        step_exit_count = exits_by_step.get(step, 0)
 
         conversion = round((count / total_sessions) * 100,
                            2) if total_sessions else 0
@@ -49,8 +63,10 @@ def funnel_summary(db: Session = Depends(get_db)):
         avg_think = db.query(func.avg(EventModel.user_think_time))\
             .filter(EventModel.screen == step).scalar() or 0
 
-        drop_off_rate = (exit_count / total_sessions) * \
-            100 if total_sessions else 0
+        if count == 0:
+            drop_off_rate = 0
+        else:
+            drop_off_rate = (step_exit_count / count) * 100
 
         if avg_latency > worst_latency:
             worst_latency = avg_latency

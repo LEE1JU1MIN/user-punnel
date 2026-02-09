@@ -1,7 +1,7 @@
 import FunnelPanel from "../components/dashboard/FunnelPanel";
 import "../styles/dashboard.css";
 
-export default function DashboardPage({ data, loading, error }) {
+export default function DashboardPage({ data, loading, error, currentScreen }) {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -9,7 +9,7 @@ export default function DashboardPage({ data, loading, error }) {
         <p>User flow x system performance</p>
       </header>
 
-      <FunnelPanel data={data} loading={loading} error={error} />
+      <FunnelPanel data={data} loading={loading} error={error} currentScreen={currentScreen} />
     </div>
   );
 }

@@ -13,23 +13,33 @@
 .sim-page button {
   padding: 12px;
   border-radius: 12px;
-  background: black;
+  background: #0b1220;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-.primary {
-  background: linear-gradient(135deg, #111827, #0f172a 45%, #111827);
-  color: #f8fafc;
+.sim-page .primary {
+  background: #f59e0b;
+  color: #0b1220;
   font-weight: 700;
-  border: 1px solid #1f2937;
+  border: 1px solid rgba(245, 158, 11, 0.7);
   transition: transform 120ms ease, opacity 120ms ease;
 }
 
-.primary:disabled {
+.sim-page .primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.sim-page .primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.25);
+}
+
+.sim-page .primary:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .primary.wide {
@@ -39,8 +49,8 @@
 
 .ghost {
   background: transparent;
-  color: #94a3b8;
-  border: 1px dashed #334155;
+  color: #fbbf24;
+  border: 1px dashed rgba(251, 191, 36, 0.6);
 }
 
 .hero {
