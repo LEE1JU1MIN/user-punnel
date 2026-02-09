@@ -9,6 +9,14 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
     ? `${kpis.worst_step.charAt(0).toUpperCase()}${kpis.worst_step.slice(1)}`
     : "-";
   const exitCount = kpis.exit_count ?? 0;
+  const avgSystem =
+    steps.length > 0
+      ? steps.reduce((sum, s) => sum + (s.system_latency_ms ?? 0), 0) / steps.length
+      : 0;
+  const avgUser =
+    steps.length > 0
+      ? steps.reduce((sum, s) => sum + (s.user_think_time_ms ?? 0), 0) / steps.length
+      : 0;
 
   return (
     <section className="funnel-panel">
@@ -18,6 +26,25 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
       )}
       {!loading && !error && !steps.length && (
         <p className="empty-state">No funnel data yet.</p>
+      )}
+
+      {!loading && !error && steps.length > 0 && (
+        <h2 className="section-title">Funnel Steps</h2>
+      )}
+
+      {!loading && !error && steps.map((step, idx) => (
+        <FunnelRow
+          key={step.step ?? idx}
+          index={idx + 1}
+          step={step}
+          isActive={currentScreen === step.step}
+          avgSystem={avgSystem}
+          avgUser={avgUser}
+        />
+      ))}
+
+      {!loading && !error && steps.length > 0 && (
+        <DropoffChart steps={steps} />
       )}
 
       {!loading && !error && steps.length > 0 && (
@@ -43,23 +70,6 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
           </div>
         </section>
       )}
-
-      {!loading && !error && steps.length > 0 && (
-        <DropoffChart steps={steps} />
-      )}
-
-      {!loading && !error && steps.length > 0 && (
-        <h2 className="section-title">Funnel Steps</h2>
-      )}
-
-      {!loading && !error && steps.map((step, idx) => (
-        <FunnelRow
-          key={step.name ?? step.step ?? idx}
-          index={idx + 1}
-          step={step}
-          isActive={currentScreen === step.step}
-        />
-      ))}
 
       {!loading && !error && steps.length > 0 && (
         <InsightBox steps={steps} />

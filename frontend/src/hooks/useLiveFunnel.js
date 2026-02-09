@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function useLiveFunnel() {
   const [liveData, setLiveData] = useState(null);
   const wsRef = useRef(null);
 
-  useEffect(() => {
-    const send = (payload) => {
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify(payload));
-        }
-    };
+  const send = useCallback((payload) => {
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify(payload));
+    }
+  }, []);
 
+  useEffect(() => {
     const ws = new WebSocket("ws://localhost:8000/ws/metrics");
     wsRef.current = ws;
 
