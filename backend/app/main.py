@@ -1,5 +1,6 @@
 # app/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI,WebSocket, WebSocketDisconnect
+from app.ws_manager import manager
 from app.db import engine, Base, SessionLocal
 from sqlalchemy import text  
 from app.models import session, event, funnel_snapshot
@@ -42,4 +43,11 @@ def db_check():
         db.close()
 
 
-
+@app.websocket("/ws/metrics")
+async def websocket_metrics(ws: WebSocket):
+    await manager.connect(ws)
+    try:
+        while True:
+            await ws.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(ws)

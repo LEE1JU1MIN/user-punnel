@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models.event import Event as EventModel
 from app.schemas import EventCreate, EventOut
+from app.ws_manager import manager
+from app.routers.funnel import funnel_summary
 
 
 router = APIRouter(prefix="/events", tags=["events"])
