@@ -418,6 +418,49 @@
   padding: 16px;
 }
 
+/* Average Latency Panel */
+
+.avg-panel {
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.avg-title {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.avg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.avg-card {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.avg-name {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.avg-values {
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
 .chart-header {
   display: flex;
   justify-content: space-between;

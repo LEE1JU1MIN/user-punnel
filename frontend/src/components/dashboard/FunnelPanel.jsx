@@ -35,7 +35,7 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
       )}
 
       {!loading && !error && steps.length > 0 && (
-        <h2 className="section-title" data-tooltip="ステップ別の指標一覧">Funnel Steps</h2>
+        <h2 className="section-title" data-tooltip="ステップ別の指標一覧">Funnel Steps_RealTime</h2>
       )}
 
       {!loading && !error && steps.map((step, idx) => (
@@ -49,6 +49,23 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
           isRisk={maxDropOff > 0 && (step.drop_off_rate ?? 0) === maxDropOff}
         />
       ))}
+
+      {!loading && !error && steps.length > 0 && (
+        <section className="avg-panel" data-tooltip="ステップ別の平均レイテンシ">
+          <div className="avg-title">Average Latency by Step</div>
+          <div className="avg-grid">
+            {steps.map((step, idx) => (
+              <div key={`avg-${step.step ?? idx}`} className="avg-card">
+                <div className="avg-name">{step.name}</div>
+                <div className="avg-values">
+                  <span>System {step.avg_system_latency_ms ?? 0}ms</span>
+                  <span>User {step.avg_user_think_time_ms ?? 0}ms</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {!loading && !error && steps.length > 0 && (
         <DropoffChart steps={steps} />

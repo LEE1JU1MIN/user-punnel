@@ -67,12 +67,6 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
 
     setLoading(true);
 
-    let latency = 300; // default latency
-    if (screen === "home" && next === "product") latency = 600;
-    if (screen === "cart" && next === "success") latency = 2800;
-
-    await new Promise((r) => setTimeout(r, latency));
-
     // UI 먼저 이동
     setHistory((prev) => [...prev, next]);
     setScreen(next);

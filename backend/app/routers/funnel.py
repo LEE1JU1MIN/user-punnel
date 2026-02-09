@@ -57,13 +57,26 @@ def funnel_summary(db: Session = Depends(get_db)):
         conversion = round((count / total_sessions) * 100,
                            2) if total_sessions else 0
 
-        avg_latency = db.query(func.avg(EventModel.system_latency))\
+        latest_event = (
+            db.query(EventModel)
+            .filter(
+                EventModel.screen == step,
+                EventModel.event_type == "navigate"
+            )
+            .order_by(EventModel.timestamp.desc())
+            .first()
+        )
+
+        latest_system = latest_event.system_latency if latest_event else 0
+        latest_user = latest_event.user_think_time if latest_event else 0
+
+        avg_system = db.query(func.avg(EventModel.system_latency))\
             .filter(
                 EventModel.screen == step,
                 EventModel.event_type == "navigate"
             ).scalar() or 0
 
-        avg_think = db.query(func.avg(EventModel.user_think_time))\
+        avg_user = db.query(func.avg(EventModel.user_think_time))\
             .filter(
                 EventModel.screen == step,
                 EventModel.event_type == "navigate"
@@ -74,16 +87,18 @@ def funnel_summary(db: Session = Depends(get_db)):
         else:
             drop_off_rate = (step_exit_count / count) * 100
 
-        if avg_latency > worst_latency:
-            worst_latency = avg_latency
+        if latest_system > worst_latency:
+            worst_latency = latest_system
             worst_step = step
 
         summary.append({
             "step": step,
             "name": step.capitalize(),
             "conversion_rate": conversion,
-            "system_latency_ms": int(avg_latency),
-            "user_think_time_ms": int(avg_think),
+            "system_latency_ms": int(latest_system),
+            "user_think_time_ms": int(latest_user),
+            "avg_system_latency_ms": int(avg_system),
+            "avg_user_think_time_ms": int(avg_user),
             "total_users": count,
             "drop_off_rate": round(drop_off_rate, 2)
         })
