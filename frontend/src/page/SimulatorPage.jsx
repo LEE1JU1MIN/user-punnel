@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import MobileFrame from "../layout/MobileFrame";
 
@@ -35,6 +35,25 @@ export default function SimulatorPage({ onRefresh }) {
   const [history, setHistory] = useState(["home"]);
   const [loading, setLoading] = useState(false);
   const startTimeRef = useRef(Date.now());
+  const userIdRef = useRef(createUserId());
+  const prevScreenRef = useRef("home");
+
+  useEffect(() => {
+    const prevScreen = prevScreenRef.current;
+    prevScreenRef.current = screen;
+    if (!(prevScreen === "exit" && screen === "home")) return;
+
+    userIdRef.current = createUserId();
+    postEvent({
+      user_id: userIdRef.current,
+      screen: "home",
+      next_screen: "home",
+      event_type: "enter",
+      user_think_time: 0,
+      system_latency: 0,
+      timestamp: new Date().toISOString(),
+    }).then(() => onRefresh && onRefresh());
+  }, [screen, onRefresh]);
 
   const handleNavigate = async (next) => {
     if (loading || next === screen) return;
@@ -54,7 +73,7 @@ export default function SimulatorPage({ onRefresh }) {
     startTimeRef.current = Date.now();
 
     postEvent({
-      user_id: createUserId(),
+      user_id: userIdRef.current,
       screen: screen,
       next_screen: next,
       event_type: "navigate",
@@ -109,7 +128,7 @@ export default function SimulatorPage({ onRefresh }) {
     startTimeRef.current = Date.now();
 
     postEvent({
-      user_id: createUserId(),
+      user_id: userIdRef.current,
       screen: "exit",
       next_screen: "exit",
       event_type: "exit",

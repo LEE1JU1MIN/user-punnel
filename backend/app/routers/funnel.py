@@ -13,19 +13,19 @@ def funnel_summary(db: Session = Depends(get_db)):
     steps = ["home", "product", "cart", "success"]
     summary = []
 
-    total_sessions = (
-        db.query(EventModel.user_id)
-        .filter(EventModel.screen == "home")
-        .distinct()
-        .count()
-    )
-
     exit_count = (
         db.query(EventModel.user_id)
         .filter(
             EventModel.screen == "exit",
             EventModel.event_type == "exit"
         )
+        .distinct()
+        .count()
+    )
+
+    total_sessions = (
+        db.query(EventModel.user_id)
+        .filter(EventModel.screen == "home")
         .distinct()
         .count()
     )
@@ -40,7 +40,8 @@ def funnel_summary(db: Session = Depends(get_db)):
             .count()
         )
 
-        conversion = round((count / total_sessions) * 100, 2) if total_sessions else 0
+        conversion = round((count / total_sessions) * 100,
+                           2) if total_sessions else 0
 
         avg_latency = db.query(func.avg(EventModel.system_latency))\
             .filter(EventModel.screen == step).scalar() or 0
@@ -48,7 +49,8 @@ def funnel_summary(db: Session = Depends(get_db)):
         avg_think = db.query(func.avg(EventModel.user_think_time))\
             .filter(EventModel.screen == step).scalar() or 0
 
-        drop_off_rate = (exit_count / total_sessions) * 100 if total_sessions else 0
+        drop_off_rate = (exit_count / total_sessions) * \
+            100 if total_sessions else 0
 
         if avg_latency > worst_latency:
             worst_latency = avg_latency
@@ -66,7 +68,8 @@ def funnel_summary(db: Session = Depends(get_db)):
 
     overall_conversion = 0
     if total_sessions:
-        success_count = next((item["total_users"] for item in summary if item["step"] == "success"), 0)
+        success_count = next(
+            (item["total_users"] for item in summary if item["step"] == "success"), 0)
         overall_conversion = round((success_count / total_sessions) * 100, 2)
 
     return {
