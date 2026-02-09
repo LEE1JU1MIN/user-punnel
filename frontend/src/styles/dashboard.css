@@ -282,11 +282,11 @@
   font-size: 10px;
 }
 
-.latency-value.fast {
+.latency-value.increase {
   color: #22c55e;
 }
 
-.latency-value.slow {
+.latency-value.decrease {
   color: #ef4444;
 }
 .latency-track {
@@ -295,6 +295,16 @@
   background: #020617;
   border-radius: 999px;
   overflow: hidden;
+}
+
+.latency-track::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(148, 163, 184, 0.4);
 }
 
 .latency-fill {
@@ -306,6 +316,14 @@
 }
 
 .latency-fill.slow {
+  background: #ef4444;
+}
+
+.latency-fill.increase {
+  background: #22c55e;
+}
+
+.latency-fill.decrease {
   background: #ef4444;
 }
 

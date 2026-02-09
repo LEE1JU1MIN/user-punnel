@@ -33,7 +33,7 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
       )}
 
       {!loading && !error && steps.length > 0 && (
-        <h2 className="section-title">Funnel Steps</h2>
+        <h2 className="section-title" title="ステップ別の指標一覧">Funnel Steps</h2>
       )}
 
       {!loading && !error && steps.map((step, idx) => (
@@ -53,22 +53,22 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
       )}
 
       {!loading && !error && steps.length > 0 && (
-        <section className="kpi-panel">
+        <section className="kpi-panel" title="全体の主要指標">
           <div className="kpi-title">KPI</div>
           <div className="kpi-row">
-            <div className="kpi-card">
+            <div className="kpi-card" title="ホーム到達ユーザー数">
               <div className="kpi-label">Total Users</div>
               <div className="kpi-value">{kpis.total_users ?? 0}</div>
             </div>
-            <div className="kpi-card">
+            <div className="kpi-card" title="成功までの全体転換率">
               <div className="kpi-label">Overall Conversion</div>
               <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
             </div>
-            <div className="kpi-card">
+            <div className="kpi-card" title="離脱ボタンを押したユーザー数">
               <div className="kpi-label">Exit Count</div>
               <div className="kpi-value">{exitCount}</div>
             </div>
-            <div className="kpi-card">
+            <div className="kpi-card" title="遅延が最も大きいステップ">
               <div className="kpi-label">Worst Step</div>
               <div className="kpi-value">{worstLabel}</div>
             </div>
