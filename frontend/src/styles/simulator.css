@@ -210,13 +210,19 @@
 
 .sim-shell {
   position: relative;
-  min-height: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #0f172a, #111827);
   color: #e2e8f0;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 12px 12px 24px;
+}
+
+.sim-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .status-bar {
@@ -273,11 +279,12 @@
 .sim-content {
   position: relative;
   flex: 1;
+  min-height: 0;
   background: #0b1220;
   border: 1px solid #1f2937;
   border-radius: 18px;
   padding: 16px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .sim-overlay {
@@ -293,6 +300,49 @@
 .sim-page button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.sim-help {
+  margin-top: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.75), rgba(2, 6, 23, 0.6));
+  color: #cbd5f5;
+  font-size: 12px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.sim-help-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.sim-help p {
+  margin: 0;
+}
+
+.sim-help-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.sim-help-item {
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.sim-help-label {
+  font-size: 11px;
+  color: #a5b4fc;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
 }
 
 .exit-btn {
