@@ -58,10 +58,16 @@ def funnel_summary(db: Session = Depends(get_db)):
                            2) if total_sessions else 0
 
         avg_latency = db.query(func.avg(EventModel.system_latency))\
-            .filter(EventModel.screen == step).scalar() or 0
+            .filter(
+                EventModel.screen == step,
+                EventModel.event_type == "navigate"
+            ).scalar() or 0
 
         avg_think = db.query(func.avg(EventModel.user_think_time))\
-            .filter(EventModel.screen == step).scalar() or 0
+            .filter(
+                EventModel.screen == step,
+                EventModel.event_type == "navigate"
+            ).scalar() or 0
 
         if count == 0:
             drop_off_rate = 0

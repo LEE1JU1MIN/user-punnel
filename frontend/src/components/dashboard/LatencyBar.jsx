@@ -58,7 +58,7 @@ export default function LatencyBar({
       <div className="latency-row">
         <div
           className="latency-label"
-          data-tooltip="クライアント側で計測した体感遅延（client latency）"
+          data-tooltip="ユーザーの思考時間（user_think_time）"
         >
           User
         </div>

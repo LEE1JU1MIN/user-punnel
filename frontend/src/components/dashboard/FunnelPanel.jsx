@@ -9,13 +9,15 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
     ? `${kpis.worst_step.charAt(0).toUpperCase()}${kpis.worst_step.slice(1)}`
     : "-";
   const exitCount = kpis.exit_count ?? 0;
+  const systemSamples = steps.map((s) => s.system_latency_ms ?? 0).filter((v) => v > 0);
+  const userSamples = steps.map((s) => s.user_think_time_ms ?? 0).filter((v) => v > 0);
   const avgSystem =
-    steps.length > 0
-      ? steps.reduce((sum, s) => sum + (s.system_latency_ms ?? 0), 0) / steps.length
+    systemSamples.length > 0
+      ? systemSamples.reduce((sum, v) => sum + v, 0) / systemSamples.length
       : 0;
   const avgUser =
-    steps.length > 0
-      ? steps.reduce((sum, s) => sum + (s.user_think_time_ms ?? 0), 0) / steps.length
+    userSamples.length > 0
+      ? userSamples.reduce((sum, v) => sum + v, 0) / userSamples.length
       : 0;
   const maxDropOff =
     steps.length > 0
