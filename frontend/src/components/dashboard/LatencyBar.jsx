@@ -29,6 +29,8 @@ export default function LatencyBar({
     systemDeltaValue === null ? "" : systemDeltaValue >= 0 ? "increase" : "decrease";
   const userDeltaClass =
     userDeltaValue === null ? "" : userDeltaValue >= 0 ? "increase" : "decrease";
+  const systemAnimateClass = systemDeltaValue === null ? "" : systemDeltaValue >= 0 ? "pulse-up" : "pulse-down";
+  const userAnimateClass = userDeltaValue === null ? "" : userDeltaValue >= 0 ? "pulse-up" : "pulse-down";
 
   return (
     <div className="latency-stack">
@@ -41,7 +43,7 @@ export default function LatencyBar({
         </div>
         <div className="latency-track">
           <div
-            className={`latency-fill ${systemDeltaClass || systemStatus}`}
+            className={`latency-fill ${systemDeltaClass || systemStatus} ${systemAnimateClass}`}
             style={{
               left: `${base}%`,
               width: `${Math.max(Math.abs(systemPos - base), minWidth)}%`,
@@ -64,7 +66,7 @@ export default function LatencyBar({
         </div>
         <div className="latency-track" data-tooltip="中央値は中央線、平均との差分はバーの長さで表示">
           <div
-            className={`latency-fill ${userDeltaClass || userStatus}`}
+            className={`latency-fill ${userDeltaClass || userStatus} ${userAnimateClass}`}
             style={{
               left: `${base}%`,
               width: `${Math.max(Math.abs(userPos - base), minWidth)}%`,
