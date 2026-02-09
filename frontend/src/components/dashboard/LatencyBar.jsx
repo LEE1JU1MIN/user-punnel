@@ -1,4 +1,11 @@
-export default function LatencyBar({ system, user, systemStatus = "normal", userStatus = "normal" }) {
+export default function LatencyBar({
+  system,
+  user,
+  systemStatus = "normal",
+  userStatus = "normal",
+  systemDelta = "",
+  userDelta = "",
+}) {
   const max = 2000;
   const minWidth = 6;
   const systemWidth = Math.max((system / max) * 100, minWidth);
@@ -14,6 +21,10 @@ export default function LatencyBar({ system, user, systemStatus = "normal", user
             style={{ width: `${Math.min(systemWidth, 100)}%` }}
           />
         </div>
+        <div className={`latency-value ${systemStatus}`}>
+          <span>{system}ms</span>
+          {systemDelta && <em>{systemDelta}</em>}
+        </div>
       </div>
       <div className="latency-row">
         <div className="latency-label">User</div>
@@ -22,6 +33,10 @@ export default function LatencyBar({ system, user, systemStatus = "normal", user
             className={`latency-fill ${userStatus}`}
             style={{ width: `${Math.min(userWidth, 100)}%` }}
           />
+        </div>
+        <div className={`latency-value ${userStatus}`}>
+          <span>{user}ms</span>
+          {userDelta && <em>{userDelta}</em>}
         </div>
       </div>
     </div>

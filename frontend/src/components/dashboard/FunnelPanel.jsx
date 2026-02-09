@@ -17,6 +17,10 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
     steps.length > 0
       ? steps.reduce((sum, s) => sum + (s.user_think_time_ms ?? 0), 0) / steps.length
       : 0;
+  const maxDropOff =
+    steps.length > 0
+      ? Math.max(...steps.map((s) => s.drop_off_rate ?? 0))
+      : 0;
 
   return (
     <section className="funnel-panel">
@@ -40,6 +44,7 @@ export default function FunnelPanel({ data, loading, error, currentScreen }) {
           isActive={currentScreen === step.step}
           avgSystem={avgSystem}
           avgUser={avgUser}
+          isRisk={maxDropOff > 0 && (step.drop_off_rate ?? 0) === maxDropOff}
         />
       ))}
 

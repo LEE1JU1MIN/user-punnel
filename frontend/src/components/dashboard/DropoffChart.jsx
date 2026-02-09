@@ -4,7 +4,7 @@ export default function DropoffChart({ steps }) {
       <div className="chart-header">
         <div>
           <div className="chart-title">Drop-off by Step</div>
-          <div className="chart-sub">Home 대비 이탈률</div>
+          <div className="chart-sub">利達率</div>
         </div>
       </div>
 

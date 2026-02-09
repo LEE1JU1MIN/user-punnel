@@ -1,6 +1,6 @@
 import LatencyBar from "./LatencyBar";
 
-export default function FunnelRow({ index, step, isActive, avgSystem, avgUser }) {
+export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, isRisk }) {
   const systemMs = step.system_latency_ms ?? 0;
   const userMs = step.user_think_time_ms ?? 0;
   const systemStatus =
@@ -30,6 +30,7 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser })
           <span className="step-name">{step.name}</span>
         </div>
         <div className="row-top-right">
+          {isRisk && <span className="risk-badge">Risk</span>}
           <div className="conversion">{step.conversion_rate}%</div>
         </div>
       </div>
@@ -45,17 +46,14 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser })
             <div className="stat-value">{step.drop_off_rate ?? 0}%</div>
           </div>
         </div>
-        <LatencyBar system={systemMs} user={userMs} systemStatus={systemStatus} userStatus={userStatus} />
-        <div className="latency-meta">
-          <span>
-            System {systemMs}ms
-            {systemDelta !== null && <em> ({formatDelta(systemDelta)})</em>}
-          </span>
-          <span>
-            User {userMs}ms
-            {userDelta !== null && <em> ({formatDelta(userDelta)})</em>}
-          </span>
-        </div>
+        <LatencyBar
+          system={systemMs}
+          user={userMs}
+          systemStatus={systemStatus}
+          userStatus={userStatus}
+          systemDelta={formatDelta(systemDelta)}
+          userDelta={formatDelta(userDelta)}
+        />
       </div>
     </div>
   );

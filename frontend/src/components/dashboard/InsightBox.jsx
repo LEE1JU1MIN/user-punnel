@@ -7,9 +7,9 @@ export default function InsightBox({ steps }) {
     <div className="insight-box">
       <strong>Insight</strong>
       <p>
-        <span className="highlight">{worst.name}</span> 단계에서
-        평균 지연이 가장 큽니다.  
-        해당 구간 최적화 시 전체 전환율 개선 여지가 큽니다.
+        <span className="highlight">{worst.name}</span> 
+        段階で平均遅延が最も大きいです。
+        この区間の最適化により、全体のコンバージョン率の改善が期待できます。
       </p>
     </div>
   );
