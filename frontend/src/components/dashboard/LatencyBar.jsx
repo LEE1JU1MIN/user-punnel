@@ -33,7 +33,12 @@ export default function LatencyBar({
   return (
     <div className="latency-stack">
       <div className="latency-row" >
-        <div className="latency-label">System</div>
+        <div
+          className="latency-label"
+          data-tooltip="サーバー側で計測した処理遅延（server latency）"
+        >
+          System
+        </div>
         <div className="latency-track">
           <div
             className={`latency-fill ${systemDeltaClass || systemStatus}`}
@@ -51,7 +56,12 @@ export default function LatencyBar({
         </div>
       </div>
       <div className="latency-row">
-        <div className="latency-label">User</div>
+        <div
+          className="latency-label"
+          data-tooltip="クライアント側で計測した体感遅延（client latency）"
+        >
+          User
+        </div>
         <div className="latency-track" data-tooltip="中央値は中央線、平均との差分はバーの長さで表示">
           <div
             className={`latency-fill ${userDeltaClass || userStatus}`}

@@ -434,6 +434,7 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, rgba(34, 211, 238, 0.35), rgba(239, 68, 68, 0.9));
+  transition: width 600ms ease;
 }
 
 /* Insight */
