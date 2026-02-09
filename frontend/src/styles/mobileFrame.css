@@ -1,0 +1,8 @@
+.mobile-frame {
+  width: 360px;
+  height: 720px;
+  background: white;
+  border-radius: 40px;
+  border: 8px solid #1e293b;
+  overflow: hidden;
+}

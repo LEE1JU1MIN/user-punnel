@@ -1,0 +1,43 @@
+/* Global baseline styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f6f8fb;
+  color: #0f172a;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-layout {
+  min-height: 100vh;
+  background: #020617; /* slate-950 */
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+.split-layout {
+  display: flex;
+  gap: 3rem;
+  padding: 2.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.split-left {
+  width: 360px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.split-right {
+  flex: 1;
+  min-width: 0;
+}
