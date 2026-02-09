@@ -25,26 +25,26 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
       <div className="row-top">
         <div className="funnel-left">
           <span className="step-index">{index}</span>
-          <span className="step-name" title="現在のファネルステップ">
+          <span className="step-name" data-tooltip="ファネルステップ">
             {step.name}
           </span>
         </div>
         <div className="row-top-right">
-          <div className="conversion" title="ホームからの到達率">
+          <div className="conversion" data-tooltip="ホームからの到達率">
             {step.conversion_rate}%
           </div>
-          {isRisk && <span className="risk-badge" title="離脱率が最も高いステップ">Risk</span>}
+          {isRisk && <span className="risk-badge" data-tooltip="離脱率が最も高いステップ">Risk</span>}
         </div>
       </div>
 
       <div className="row-bottom">
         <div className="row-stats">
           <div className="stat">
-            <div className="stat-label" title="このステップに到達したユーザー数">Users</div>
+            <div className="stat-label" data-tooltip="このステップに到達したユーザー数">Users</div>
             <div className="stat-value">{step.total_users ?? 0}</div>
           </div>
           <div className="stat">
-            <div className="stat-label" title="このステップで離脱した割合">Drop-off</div>
+            <div className="stat-label" data-tooltip="このステップで離脱した割合">Drop-off</div>
             <div className="stat-value">{step.drop_off_rate ?? 0}%</div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 export default function DropoffChart({ steps }) {
   return (
-    <section className="dropoff-chart" title="ステップ別の離脱率チャート">
+    <section className="dropoff-chart">
       <div className="chart-header">
         <div>
           <div className="chart-title">Drop-off by Step</div>
@@ -13,7 +13,7 @@ export default function DropoffChart({ steps }) {
           const value = step.drop_off_rate ?? 0;
           const width = Math.min(Math.max(value, 0), 100);
           return (
-            <div key={step.step ?? idx} className="chart-row" title="このステップで離脱した割合">
+            <div key={step.step ?? idx} className="chart-row" data-tooltip="このステップで離脱した割合">
               <div className="chart-label">
                 <span className="chart-step">{step.name}</span>
                 <span className="chart-value">{value}%</span>

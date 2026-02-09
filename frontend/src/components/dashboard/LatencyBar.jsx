@@ -32,9 +32,9 @@ export default function LatencyBar({
 
   return (
     <div className="latency-stack">
-      <div className="latency-row" title="システム遅延の平均との差分">
+      <div className="latency-row" >
         <div className="latency-label">System</div>
-        <div className="latency-track" title="中央値は中央線、平均との差分はバーの長さで表示">
+        <div className="latency-track">
           <div
             className={`latency-fill ${systemDeltaClass || systemStatus}`}
             style={{
@@ -45,14 +45,14 @@ export default function LatencyBar({
             }}
           />
         </div>
-        <div className={`latency-value ${systemDeltaClass}`}>
+        <div className={`latency-value ${systemDeltaClass}`} data-tooltip="システム遅延（平均との差分）">
           <span>{system}ms</span>
           {systemDeltaValue !== null && <em>{formatDelta(systemDeltaValue)}</em>}
         </div>
       </div>
-      <div className="latency-row" title="ユーザー遅延の平均との差分">
+      <div className="latency-row">
         <div className="latency-label">User</div>
-        <div className="latency-track" title="中央値は中央線、平均との差分はバーの長さで表示">
+        <div className="latency-track" data-tooltip="中央値は中央線、平均との差分はバーの長さで表示">
           <div
             className={`latency-fill ${userDeltaClass || userStatus}`}
             style={{
@@ -63,7 +63,7 @@ export default function LatencyBar({
             }}
           />
         </div>
-        <div className={`latency-value ${userDeltaClass}`}>
+        <div className={`latency-value ${userDeltaClass}`} data-tooltip="ユーザー遅延（平均との差分）">
           <span>{user}ms</span>
           {userDeltaValue !== null && <em>{formatDelta(userDeltaValue)}</em>}
         </div>

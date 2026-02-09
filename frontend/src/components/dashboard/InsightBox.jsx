@@ -4,7 +4,7 @@ export default function InsightBox({ steps }) {
   );
 
   return (
-    <div className="insight-box" title="遅延が最も大きいステップの要約">
+    <div className="insight-box" data-tooltip="遅延が最も大きいステップの要約">
       <strong>Insight</strong>
       <p>
         <span className="highlight">{worst.name}</span> 
