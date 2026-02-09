@@ -166,42 +166,19 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   };
 
   return (
-    <div className="sim-wrap">
-      <MobileFrame>
-        <div className="sim-shell">
-          <StatusBar />
-          <AppHeader
-            title={TITLES[screen]}
-            onBack={PREV[screen] ? handleBack : undefined}
-            onExit={handleExit}
-          />
-          <div className="sim-content">
-            {renderScreen()}
-            {loading && <div className="sim-overlay">Processing…</div>}
-          </div>
-        </div>
-      </MobileFrame>
-      <div className="sim-help">
-        <div className="sim-help-title">使い方ガイド</div>
-        <div className="sim-help-grid">
-          <div className="sim-help-item">
-            <div className="sim-help-label">1. 操作</div>
-            <p>左側のシミュレーターで、商品閲覧→カート→購入の流れを操作します。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">2. 離脱</div>
-            <p>右上の「×」で離脱をシミュレーションできます。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">3. 右側の見方</div>
-            <p>右側では離脱率・レイテンシ・転換率がリアルタイムに更新されます。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">4. レイテンシ表示</div>
-            <p>バーの中央線は平均、赤は遅い、緑は速い状態を示します。</p>
-          </div>
+    <MobileFrame>
+      <div className="sim-shell">
+        <StatusBar />
+        <AppHeader
+          title={TITLES[screen]}
+          onBack={PREV[screen] ? handleBack : undefined}
+          onExit={handleExit}
+        />
+        <div className="sim-content">
+          {renderScreen()}
+          {loading && <div className="sim-overlay">Processing…</div>}
         </div>
       </div>
-    </div>
+    </MobileFrame>
   );
 }
