@@ -186,19 +186,19 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
         <div className="sim-help-grid">
           <div className="sim-help-item">
             <div className="sim-help-label">Step 1</div>
-            <p>左の画面で「閲覧 → カート → 購入」を操作します。</p>
+            <p>左の画面で「閲覧 → カート → 購入」を操作</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 2</div>
-            <p>右上の × で離脱をシミュレーションできます。</p>
+            <p>右上の × で離脱のシミュレーション可能</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 3</div>
-            <p>右のダッシュボードで離脱率・転換率・レイテンシを確認します。</p>
+            <p>右のダッシュボードで離脱率・転換率・レイテンシを確認</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 4</div>
-            <p>レイテンシバーの中央線は平均値、色は増減を示します。</p>
+            <p>レイテンシバーの中央線は平均値、色は増減を示し</p>
           </div>
         </div>
       </div>
