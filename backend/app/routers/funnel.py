@@ -82,10 +82,10 @@ def funnel_summary(db: Session = Depends(get_db)):
                 EventModel.event_type == "navigate"
             ).scalar() or 0
 
-        if count == 0:
+        if exit_count == 0:
             drop_off_rate = 0
         else:
-            drop_off_rate = (step_exit_count / count) * 100
+            drop_off_rate = (step_exit_count / exit_count) * 100
 
         if latest_system > worst_latency:
             worst_latency = latest_system

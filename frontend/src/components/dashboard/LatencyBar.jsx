@@ -17,9 +17,9 @@ export default function LatencyBar({
   const minWidth = 2;
 
   const systemDelta =
-    avgSystem > 0 ? clamp((system - avgSystem) / avgSystem) : 0;
+    avgSystem > 0 ? clamp((avgSystem - system) / avgSystem) : 0;
   const userDelta =
-    avgUser > 0 ? clamp((user - avgUser) / avgUser) : 0;
+    avgUser > 0 ? clamp((avgUser - user) / avgUser) : 0;
 
   const systemPos = toPercent(systemDelta);
   const userPos = toPercent(userDelta);

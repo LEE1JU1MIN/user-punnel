@@ -15,6 +15,7 @@ export default function App() {
   const mergedData = liveData ?? data;
   const [showDashboard, setShowDashboard] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [insightOpen, setInsightOpen] = useState(true);
 
   useEffect(() => {
     const t = setTimeout(() => setShowDashboard(true), 250);
@@ -28,23 +29,25 @@ export default function App() {
         right={
           showDashboard ? (
             <Suspense fallback={<div className="dashboard-skeleton">Loading dashboard…</div>}>
-              <DashboardPage
-                data={mergedData}
-                loading={loading}
-                error={error}
-                currentScreen={currentScreen}
-                onClear={async () => {
-                  if (clearing) return;
-                  setClearing(true);
-                  try {
-                    await clearEvents();
-                    await refresh();
-                  } finally {
-                    setClearing(false);
-                  }
-                }}
-                clearing={clearing}
-              />
+                <DashboardPage
+                  data={mergedData}
+                  loading={loading}
+                  error={error}
+                  currentScreen={currentScreen}
+                  onClear={async () => {
+                    if (clearing) return;
+                    setClearing(true);
+                    try {
+                      await clearEvents();
+                      await refresh();
+                    } finally {
+                      setClearing(false);
+                    }
+                  }}
+                  clearing={clearing}
+                  onToggleInsight={() => setInsightOpen((v) => !v)}
+                  insightOpen={insightOpen}
+                />
             </Suspense>
           ) : (
             <div className="dashboard-skeleton">Loading dashboard…</div>

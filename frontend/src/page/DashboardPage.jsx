@@ -1,4 +1,5 @@
 import FunnelPanel from "../components/dashboard/FunnelPanel";
+import InsightBox from "../components/dashboard/InsightBox";
 import "../styles/dashboard.css";
 
 export default function DashboardPage({
@@ -8,6 +9,8 @@ export default function DashboardPage({
   currentScreen,
   onClear,
   clearing = false,
+  onToggleInsight,
+  insightOpen = true,
 }) {
   const handleClear = async () => {
     if (!onClear) return;
@@ -22,20 +25,40 @@ export default function DashboardPage({
       <header className="dashboard-header">
         <div className="dashboard-header-top">
           <h1 data-tooltip="ファネル全体のレイテンシ分析">Funnel Latency Analysis</h1>
-          <button
-            type="button"
-            className="dashboard-clear"
-            onClick={handleClear}
-            disabled={clearing}
-            data-tooltip="DB内のイベントを全削除して再計測"
-          >
-            {clearing ? "Clearing…" : "Reset Data"}
-          </button>
+          <div className="dashboard-actions">
+            <button
+              type="button"
+              className="dashboard-insight-toggle"
+              onClick={onToggleInsight}
+              data-tooltip="Insightの表示を切替"
+            >
+              {insightOpen ? "Hide Insight" : "Show Insight"}
+            </button>
+            <button
+              type="button"
+              className="dashboard-clear"
+              onClick={handleClear}
+              disabled={clearing}
+              data-tooltip="DB内のイベントを全削除して再計測"
+            >
+              {clearing ? "Clearing…" : "Reset Data"}
+            </button>
+          </div>
         </div>
         <p data-tooltip="ユーザー行動とシステム性能の関係">User flow x system performance</p>
       </header>
 
-      <FunnelPanel data={data} loading={loading} error={error} currentScreen={currentScreen} />
+      {insightOpen && !loading && !error && data?.steps?.length > 0 && (
+        <InsightBox steps={data.steps} />
+      )}
+
+      <FunnelPanel
+        data={data}
+        loading={loading}
+        error={error}
+        currentScreen={currentScreen}
+        showInsight={false}
+      />
     </div>
   );
 }

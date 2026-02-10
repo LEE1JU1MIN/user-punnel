@@ -148,8 +148,8 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
 
   const handleExit = async (reason = "click") => {
     const exitFrom = screen;
-    setHistory(["home"]);
-    setScreen("home");
+    setHistory(["exit"]);
+    setScreen("exit");
     startTimeRef.current = Date.now();
 
     const start = performance.now();

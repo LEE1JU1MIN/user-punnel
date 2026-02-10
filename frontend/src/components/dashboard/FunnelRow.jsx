@@ -16,9 +16,9 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
         ? "fast"
         : "normal";
   const systemDelta =
-    avgSystem > 0 ? Math.round(((systemMs - avgSystem) / avgSystem) * 100) : null;
+    avgSystem > 0 ? Math.round(((avgSystem - systemMs) / avgSystem) * 100) : null;
   const userDelta =
-    avgUser > 0 ? Math.round(((userMs - avgUser) / avgUser) * 100) : null;
+    avgUser > 0 ? Math.round(((avgUser - userMs) / avgUser) * 100) : null;
 
   return (
     <div className={`funnel-row ${isActive ? "active" : ""}`}>
