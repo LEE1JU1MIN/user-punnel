@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export default function LatencyBar({
   system,
   user,
@@ -23,14 +25,22 @@ export default function LatencyBar({
   const userPos = toPercent(userDelta);
   const systemLeft = systemPos < base;
   const userLeft = userPos < base;
+  const [systemTick, setSystemTick] = useState(0);
+  const [userTick, setUserTick] = useState(0);
   const formatDelta = (value) =>
     value === null ? "" : `${value > 0 ? "+" : ""}${value}%`;
   const systemDeltaClass =
     systemDeltaValue === null ? "" : systemDeltaValue >= 0 ? "increase" : "decrease";
   const userDeltaClass =
     userDeltaValue === null ? "" : userDeltaValue >= 0 ? "increase" : "decrease";
-  const systemAnimateClass = systemDeltaValue === null ? "" : systemDeltaValue >= 0 ? "pulse-up" : "pulse-down";
-  const userAnimateClass = userDeltaValue === null ? "" : userDeltaValue >= 0 ? "pulse-up" : "pulse-down";
+
+  useEffect(() => {
+    setSystemTick((v) => v + 1);
+  }, [systemPos, systemLeft]);
+
+  useEffect(() => {
+    setUserTick((v) => v + 1);
+  }, [userPos, userLeft]);
 
   return (
     <div className="latency-stack">
@@ -43,14 +53,22 @@ export default function LatencyBar({
         </div>
         <div className="latency-track">
           <div
-            className={`latency-fill ${systemDeltaClass || systemStatus} ${systemAnimateClass}`}
+            className="latency-fill-wrap"
             style={{
               left: `${base}%`,
               width: `${Math.max(Math.abs(systemPos - base), minWidth)}%`,
               transform: systemLeft ? "translateX(-100%)" : "none",
-              borderRadius: systemLeft ? "999px 0 0 999px" : "0 999px 999px 0",
             }}
-          />
+          >
+            <div
+              key={`system-${systemTick}`}
+              className={`latency-fill ${systemDeltaClass || systemStatus}`}
+              style={{
+                transformOrigin: systemLeft ? "right center" : "left center",
+                borderRadius: systemLeft ? "999px 0 0 999px" : "0 999px 999px 0",
+              }}
+            />
+          </div>
         </div>
         <div className={`latency-value ${systemDeltaClass}`} data-tooltip="システム遅延（平均との差分）">
           <span>{system}ms</span>
@@ -66,14 +84,22 @@ export default function LatencyBar({
         </div>
         <div className="latency-track" data-tooltip="中央値は中央線、平均との差分はバーの長さで表示">
           <div
-            className={`latency-fill ${userDeltaClass || userStatus} ${userAnimateClass}`}
+            className="latency-fill-wrap"
             style={{
               left: `${base}%`,
               width: `${Math.max(Math.abs(userPos - base), minWidth)}%`,
               transform: userLeft ? "translateX(-100%)" : "none",
-              borderRadius: userLeft ? "999px 0 0 999px" : "0 999px 999px 0",
             }}
-          />
+          >
+            <div
+              key={`user-${userTick}`}
+              className={`latency-fill ${userDeltaClass || userStatus}`}
+              style={{
+                transformOrigin: userLeft ? "right center" : "left center",
+                borderRadius: userLeft ? "999px 0 0 999px" : "0 999px 999px 0",
+              }}
+            />
+          </div>
         </div>
         <div className={`latency-value ${userDeltaClass}`} data-tooltip="ユーザー遅延（平均との差分）">
           <span>{user}ms</span>

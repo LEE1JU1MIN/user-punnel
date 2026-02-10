@@ -4,6 +4,7 @@ import SimulatorPage from "./page/SimulatorPage";
 import { useEffect, useState, Suspense, lazy } from "react";
 import useFunnelMetrics from "./hooks/useFunnelMetrics";
 import useLiveFunnel from "./hooks/useLiveFunnel";
+import { clearEvents } from "./services/eventApi";
 
 const DashboardPage = lazy(() => import("./page/DashboardPage"));
 
@@ -13,6 +14,7 @@ export default function App() {
   const { liveData, send } = useLiveFunnel();
   const mergedData = liveData ?? data;
   const [showDashboard, setShowDashboard] = useState(false);
+  const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setShowDashboard(true), 250);
@@ -31,6 +33,17 @@ export default function App() {
                 loading={loading}
                 error={error}
                 currentScreen={currentScreen}
+                onClear={async () => {
+                  if (clearing) return;
+                  setClearing(true);
+                  try {
+                    await clearEvents();
+                    await refresh();
+                  } finally {
+                    setClearing(false);
+                  }
+                }}
+                clearing={clearing}
               />
             </Suspense>
           ) : (
