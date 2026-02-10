@@ -8,6 +8,8 @@ export default function FunnelPanel({
   error,
   currentScreen,
   showInsight = true,
+  onToggleInsight,
+  insightOpen = true,
 }) {
   const steps = data?.steps || [];
   const kpis = data?.kpis || {};
@@ -31,7 +33,24 @@ export default function FunnelPanel({
       )}
 
       {!loading && !error && steps.length > 0 && (
-        <h2 className="section-title" data-tooltip="ステップ別の指標一覧">Funnel Steps_RealTime</h2>
+        <div className="section-title-block">
+          {onToggleInsight && (
+            <div className="insight-toggle-row">
+              <button
+                type="button"
+                className="dashboard-insight-toggle"
+                onClick={onToggleInsight}
+                data-tooltip="Insight(要点と改善提案)を表示/非表示に切り替えます。"
+              >
+                {insightOpen ? "Hide Insight" : "Show Insight"}
+              </button>
+              <span className="insight-toggle-note">
+                Webサイトの顧客離脱ファネル分析をご覧になりたい方は、こちらをクリックしてください
+              </span>
+            </div>
+          )}
+          <h2 className="section-title" data-tooltip="ステップ別の指標一覧">Funnel Steps_RealTime</h2>
+        </div>
       )}
 
       {!loading && !error && steps.map((step, idx) => (

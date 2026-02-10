@@ -30,10 +30,10 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
           </span>
         </div>
         <div className="row-top-right">
-          <div className="conversion" data-tooltip="ホームからの到達率">
-            {step.conversion_rate}%
-          </div>
           {isRisk && <span className="risk-badge" data-tooltip="離脱率が最も高いステップ">Risk</span>}
+          <div className="conversion" data-tooltip="ホームからの到達率">
+            {step.conversion_rate}% <span className="conversion-label">到達率</span>
+          </div>
         </div>
       </div>
 

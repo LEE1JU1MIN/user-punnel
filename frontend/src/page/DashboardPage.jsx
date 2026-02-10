@@ -29,25 +29,17 @@ export default function DashboardPage({
           <div className="dashboard-actions">
             <div
               className={`ws-badge ${wsConnected ? "online" : "offline"}`}
-              data-tooltip="WebSocketは「画面とサーバーがずっとつながっている電話」のような仕組みです。ボタンを押した瞬間に数字が変わるので、何が起きたかをすぐに確認できます。普通の通信だと更新が遅れるため、リアルタイム性を見せるために使っています。"
+              data-tooltip="WebSocketとは&#10;「画面とサーバーがずっとつながっている電話」のような仕組みです。ボタンを押した瞬間に数字が変わるので、何が起きたかをすぐに確認できます。普通の通信だと更新が遅れるため、リアルタイム性を見せるために使っています。"
             >
               <span className="ws-dot" />
               {wsConnected ? "WS Online" : "WS Offline"}
             </div>
             <button
               type="button"
-              className="dashboard-insight-toggle"
-              onClick={onToggleInsight}
-              data-tooltip="Insightの表示を切替"
-            >
-              {insightOpen ? "Hide Insight" : "Show Insight"}
-            </button>
-            <button
-              type="button"
               className="dashboard-clear"
               onClick={handleClear}
               disabled={clearing}
-              data-tooltip="DB内のイベントを全削除して再計測"
+              data-tooltip="データを初期化し、最初の状態から再計測します。テスト中の結果をリセットしたい時に使います。"
             >
               {clearing ? "Clearing…" : "Reset Data"}
             </button>
@@ -57,7 +49,7 @@ export default function DashboardPage({
       </header>
 
       {insightOpen && !loading && !error && data?.steps?.length > 0 && (
-        <InsightBox steps={data.steps} />
+        <InsightBox steps={data.steps} onClose={onToggleInsight} />
       )}
 
       <FunnelPanel
@@ -65,6 +57,8 @@ export default function DashboardPage({
         loading={loading}
         error={error}
         currentScreen={currentScreen}
+        onToggleInsight={onToggleInsight}
+        insightOpen={insightOpen}
         showInsight={false}
       />
     </div>

@@ -1,35 +1,8 @@
-const ACTIONS = {
-  home: [
-    "商品カテゴリの入口を明確化し、迷いを減らす",
-    "最初の3秒で価値が伝わるヒーローを配置",
-  ],
-  product: [
-    "比較材料（レビュー・保証・配送）を上部に集約",
-    "カート導線の視認性を強化",
-  ],
-  cart: [
-    "入力項目を最小化し、ゲスト購入を強調",
-    "配送・支払いのステップを1画面化",
-  ],
-  success: [
-    "購入後の次アクション（シェア/再購入）を提示",
-    "完了画面の安心情報（保証/返品）を整理",
-  ],
-};
-
-const formatDelta = (value) => {
-  if (value === null || value === undefined) return "0%";
-  return `${value > 0 ? "+" : ""}${value}%`;
-};
-
-export default function InsightBox({ steps }) {
+export default function InsightBox({ steps, onClose }) {
   if (!steps || steps.length === 0) return null;
 
   const worstDrop = steps.reduce((a, b) =>
     (a.drop_off_rate ?? 0) > (b.drop_off_rate ?? 0) ? a : b
-  );
-  const worstLatency = steps.reduce((a, b) =>
-    (a.avg_system_latency_ms ?? 0) > (b.avg_system_latency_ms ?? 0) ? a : b
   );
 
   const userAvgSamples = steps
@@ -50,47 +23,76 @@ export default function InsightBox({ steps }) {
 
   const userDelta =
     overallUserAvg > 0
-      ? Math.round(((worstDrop.avg_user_think_time_ms ?? 0) - overallUserAvg) / overallUserAvg * 100)
-      : null;
+      ? Math.round(((overallUserAvg - (worstDrop.avg_user_think_time_ms ?? 0)) / overallUserAvg) * 100)
+      : 0;
   const systemDelta =
     overallSystemAvg > 0
-      ? Math.round(((worstLatency.avg_system_latency_ms ?? 0) - overallSystemAvg) / overallSystemAvg * 100)
-      : null;
+      ? Math.round((((worstDrop.avg_system_latency_ms ?? 0) - overallSystemAvg) / overallSystemAvg) * 100)
+      : 0;
 
-  const primaryStep = worstDrop.step || worstLatency.step;
-  const primaryName = worstDrop.name || worstLatency.name || "Step";
-  const actions = ACTIONS[primaryStep] || [
-    "主要導線の情報量を削減し意思決定を支援",
-    "最短経路（1クリック少ない導線）を設計",
-  ];
+  const focusName = worstDrop.name || "Product";
+  const dropRate = worstDrop.drop_off_rate ?? 0;
 
   return (
     <div className="insight-box" data-tooltip="主要課題と改善アクションを要約">
       <div className="insight-header">
-        <strong>Insight</strong>
-        <span className="insight-tag">Actionable</span>
+        <strong>核心インサイト</strong>
+        <button
+          type="button"
+          className="insight-close"
+          onClick={onClose}
+          data-tooltip="Insightを閉じる"
+        >
+          Hide Insight
+        </button>
       </div>
 
-      <div className="insight-lines">
-        <div className="insight-line">
-          重要課題: <span className="highlight">{primaryName}</span> が全離脱の中心（{worstDrop.drop_off_rate ?? 0}%）
-        </div>
-        <div className="insight-line">
-          要因: User Think Time {formatDelta(userDelta)} / System Latency {formatDelta(systemDelta)} が平均より悪化
-        </div>
-        <div className="insight-line">
-          影響: この区間の改善が全体CVRと再訪意向に最も効く
-        </div>
-        <div className="insight-line">
-          優先度: “判断負荷の軽減” と “待ち時間の短縮” を同時に実行
+      <div className="insight-block">
+        <div className="insight-block-title">1. 問題の本質</div>
+        <ul className="insight-list">
+          <li>離脱の<span className="highlight">{dropRate}%</span>が「{focusName}」で発生</li>
+          <li>興味はあるが、判断できずに離脱している</li>
+          <li>技術問題ではなく「判断が面倒になる構造」が原因</li>
+        </ul>
+      </div>
+
+      <div className="insight-block">
+        <div className="insight-block-title">2. なぜ離脱が起きるのか（非エンジニア向け）</div>
+        <ul className="insight-list">
+          <li>ユーザーの迷い時間（考える時間）：{userDelta >= 0 ? `-${userDelta}%` : `+${Math.abs(userDelta)}%`}</li>
+          <li>十分理解する前に判断を求められている</li>
+          <li>「買って大丈夫？」を整理する時間がない</li>
+          <li>画面の待ち時間（読み込みの遅さ）：+{Math.abs(systemDelta)}%</li>
+          <li>迷っている時のローディングは離脱を加速させる</li>
+        </ul>
+        <div className="insight-conclusion">
+          結論：考えさせるのが早すぎて、システムは遅い。購入転換に最悪の組み合わせ。
         </div>
       </div>
 
-      <div className="insight-actions">
-        <div className="insight-action-title">Action Plan</div>
-        <div className="insight-action">1. {actions[0]}</div>
-        <div className="insight-action">2. {actions[1]}</div>
-        <div className="insight-action">3. KPI: 離脱率−5pt / 平均レイテンシ−20%</div>
+      <div className="insight-block">
+        <div className="insight-block-title">3. ビジネスインパクト</div>
+        <ul className="insight-list">
+          <li>この区間はCVRと再訪意向を同時に決める最大のボトルネック</li>
+          <li>ここだけ改善すれば、全体を触らずに成果が出る</li>
+          <li>開発ROIが最も高いレバー</li>
+        </ul>
+      </div>
+
+      <div className="insight-block">
+        <div className="insight-block-title">4. 戦略的優先度</div>
+        <div className="insight-note">
+          “判断コスト” と “待ち時間コスト” を同時に消す設計が最優先
+        </div>
+      </div>
+
+      <div className="insight-block insight-actions">
+        <div className="insight-block-title">Action Plan（意思決定向け）</div>
+        <ol className="insight-list ordered">
+          <li>判断負担の除去：レビュー・保証・配送を上部に集約</li>
+          <li>行動摩擦の除去：CTAの視覚優先度を強化</li>
+          <li>成果指標：Product離脱 −5pt / 平均Latency −20%</li>
+        </ol>
       </div>
     </div>
   );

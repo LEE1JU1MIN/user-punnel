@@ -40,7 +40,8 @@
   font-size: 11px;
   padding: 10px 12px;
   border-radius: 10px;
-  max-width: 360px;
+  max-width: min(680px, 72vw);
+  width: max-content;
   white-space: normal;
   text-align: left;
   line-height: 1.55;
@@ -50,6 +51,18 @@
   z-index: 5;
   box-shadow: 0 10px 24px rgba(2, 6, 23, 0.45);
   transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.dashboard-actions [data-tooltip]::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+  text-align: left;
+  width: min(520px, 72vw);
+}
+
+.dashboard-actions [data-tooltip]:hover::after {
+  transform: translateY(2px);
 }
 
 [data-tooltip]:hover::after {
@@ -136,21 +149,22 @@
 }
 
 .dashboard-insight-toggle {
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  background: rgba(14, 116, 144, 0.35);
-  color: #bae6fd;
-  padding: 6px 10px;
-  font-size: 11px;
-  border-radius: 10px;
-  letter-spacing: 0.04em;
+  border: 1px solid rgba(56, 189, 248, 0.75);
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.9), rgba(56, 189, 248, 0.7));
+  color: #e0f2fe;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+  box-shadow: 0 8px 18px rgba(56, 189, 248, 0.25);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
 }
 
 .dashboard-insight-toggle:hover {
-  background: rgba(14, 116, 144, 0.5);
-  border-color: rgba(56, 189, 248, 0.7);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(56, 189, 248, 0.35);
 }
 
 .dashboard-clear {
@@ -190,6 +204,24 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 4px 0 8px;
+}
+
+.section-title-block {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.insight-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.insight-toggle-note {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 
 .empty-state {
@@ -327,6 +359,13 @@
 .conversion {
   font-weight: 700;
   color: var(--accent);
+}
+
+.conversion-label {
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: 6px;
+  letter-spacing: 0.04em;
 }
 
 .row-stats {
@@ -625,6 +664,57 @@
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
+.insight-block {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(248, 113, 113, 0.35);
+}
+
+.insight-block:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.insight-block-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fecaca;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.insight-list {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 4px;
+  color: #f8fafc;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.insight-list.ordered {
+  list-style: decimal;
+}
+
+.insight-conclusion {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #fee2e2;
+}
+
+.insight-note {
+  font-size: 12px;
+  color: #f8fafc;
+  line-height: 1.5;
+}
+
 .insight-header {
   display: flex;
   align-items: center;
@@ -632,15 +722,22 @@
   margin-bottom: 10px;
 }
 
-.insight-tag {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.6);
-  color: #fef2f2;
-  border: 1px solid rgba(248, 113, 113, 0.35);
+.insight-close {
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(127, 29, 29, 0.35);
+  color: #fecaca;
+  padding: 6px 10px;
+  font-size: 11px;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+
+.insight-close:hover {
+  background: rgba(127, 29, 29, 0.5);
+  border-color: rgba(248, 113, 113, 0.7);
+  transform: translateY(-1px);
 }
 
 .insight-lines {
