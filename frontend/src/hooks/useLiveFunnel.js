@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export default function useLiveFunnel() {
   const [liveData, setLiveData] = useState(null);
   const wsRef = useRef(null);
+  const [connected, setConnected] = useState(false);
 
   const send = useCallback((payload) => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -13,6 +14,10 @@ export default function useLiveFunnel() {
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8000/ws/metrics");
     wsRef.current = ws;
+
+    ws.onopen = () => {
+      setConnected(true);
+    };
 
     ws.onmessage = (event) => {
       try {
@@ -25,6 +30,11 @@ export default function useLiveFunnel() {
 
     ws.onerror = (err) => {
       console.error("WS error", err);
+      setConnected(false);
+    };
+
+    ws.onclose = () => {
+      setConnected(false);
     };
 
     return () => {
@@ -32,5 +42,9 @@ export default function useLiveFunnel() {
     };
   }, []);
 
-  return { liveData, send };
+  const reset = useCallback(() => {
+    setLiveData(null);
+  }, []);
+
+  return { liveData, send, reset, connected };
 }

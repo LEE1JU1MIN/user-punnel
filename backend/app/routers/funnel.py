@@ -14,9 +14,11 @@ def funnel_summary(db: Session = Depends(get_db)):
     summary = []
 
     exit_count = (
-        db.query(EventModel.user_id)
-        .filter(EventModel.event_type == "exit")
-        .distinct()
+        db.query(EventModel)
+        .filter(
+            EventModel.event_type == "exit",
+            EventModel.screen.in_(steps)
+        )
         .count()
     )
 
@@ -41,12 +43,11 @@ def funnel_summary(db: Session = Depends(get_db)):
     exits_by_step = {}
     for step in steps:
         exits_by_step[step] = (
-            db.query(EventModel.user_id)
+            db.query(EventModel)
             .filter(
                 EventModel.event_type == "exit",
                 EventModel.screen == step
             )
-            .distinct()
             .count()
         )
 

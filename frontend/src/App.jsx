@@ -11,7 +11,7 @@ const DashboardPage = lazy(() => import("./page/DashboardPage"));
 export default function App() {
   const { data, loading, error, refresh } = useFunnelMetrics();
   const [currentScreen, setCurrentScreen] = useState("home");
-  const { liveData, send } = useLiveFunnel();
+  const { liveData, send, reset } = useLiveFunnel();
   const mergedData = liveData ?? data;
   const [showDashboard, setShowDashboard] = useState(false);
   const [clearing, setClearing] = useState(false);
@@ -39,6 +39,7 @@ export default function App() {
                     setClearing(true);
                     try {
                       await clearEvents();
+                      reset();
                       await refresh();
                     } finally {
                       setClearing(false);
