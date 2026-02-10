@@ -38,9 +38,13 @@
   border: 1px solid var(--tooltip-border);
   color: var(--ink);
   font-size: 11px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  white-space: nowrap;
+  padding: 10px 12px;
+  border-radius: 10px;
+  max-width: 360px;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
   opacity: 0;
   pointer-events: none;
   z-index: 5;
@@ -85,6 +89,50 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.ws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: var(--muted);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.ws-badge .ws-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #94a3b8;
+  box-shadow: 0 0 8px rgba(148, 163, 184, 0.5);
+}
+
+.ws-badge.online {
+  color: #bbf7d0;
+  border-color: rgba(34, 197, 94, 0.5);
+  background: rgba(22, 163, 74, 0.18);
+}
+
+.ws-badge.online .ws-dot {
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+}
+
+.ws-badge.offline {
+  color: #fecaca;
+  border-color: rgba(248, 113, 113, 0.55);
+  background: rgba(127, 29, 29, 0.2);
+}
+
+.ws-badge.offline .ws-dot {
+  background: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
 }
 
 .dashboard-insight-toggle {

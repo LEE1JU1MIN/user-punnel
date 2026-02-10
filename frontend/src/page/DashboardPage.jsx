@@ -7,6 +7,7 @@ export default function DashboardPage({
   loading,
   error,
   currentScreen,
+  wsConnected = false,
   onClear,
   clearing = false,
   onToggleInsight,
@@ -26,6 +27,13 @@ export default function DashboardPage({
         <div className="dashboard-header-top">
           <h1 data-tooltip="ファネル全体のレイテンシ分析">Funnel Latency Analysis</h1>
           <div className="dashboard-actions">
+            <div
+              className={`ws-badge ${wsConnected ? "online" : "offline"}`}
+              data-tooltip="WebSocketは「画面とサーバーがずっとつながっている電話」のような仕組みです。ボタンを押した瞬間に数字が変わるので、何が起きたかをすぐに確認できます。普通の通信だと更新が遅れるため、リアルタイム性を見せるために使っています。"
+            >
+              <span className="ws-dot" />
+              {wsConnected ? "WS Online" : "WS Offline"}
+            </div>
             <button
               type="button"
               className="dashboard-insight-toggle"
