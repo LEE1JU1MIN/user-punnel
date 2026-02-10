@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 import MobileFrame from "../layout/MobileFrame";
 
@@ -37,12 +37,19 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   const startTimeRef = useRef(Date.now());
   const userIdRef = useRef(createUserId());
   const prevScreenRef = useRef("home");
+  const idleTimerRef = useRef(null);
+
+  const resetIdleTimer = useCallback(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      handleExit("timeout");
+    }, 5 * 60 * 1000);
+  }, []);
 
   useEffect(() => {
     const prevScreen = prevScreenRef.current;
     prevScreenRef.current = screen;
 
-    // exit -> home 으로 복귀했을 때만 enter 이벤트 기록
     if (!(prevScreen === "exit" && screen === "home")) return;
 
     userIdRef.current = createUserId();
@@ -61,18 +68,24 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
     if (onScreenChange) onScreenChange(screen);
   }, [screen, onScreenChange]);
 
+  useEffect(() => {
+    resetIdleTimer();
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [resetIdleTimer]);
+
   const handleNavigate = async (next) => {
     if (loading || next === screen) return;
     const thinkTime = Date.now() - startTimeRef.current;
 
     setLoading(true);
 
-    // UI 먼저 이동
     setHistory((prev) => [...prev, next]);
     setScreen(next);
     startTimeRef.current = Date.now();
+    resetIdleTimer();
 
-    // 실제 HTTP latency 측정
     const start = performance.now();
     const res = await postEvent({
       user_id: userIdRef.current,
@@ -106,12 +119,14 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
       startTimeRef.current = Date.now();
       return updated;
     });
+    resetIdleTimer();
   };
 
   const handleReset = () => {
     setHistory(["home"]);
     setScreen("home");
     startTimeRef.current = Date.now();
+    resetIdleTimer();
   };
 
   const renderScreen = () => {
@@ -131,15 +146,16 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
     }
   };
 
-  const handleExit = async () => {
-    setHistory(["exit"]);
-    setScreen("exit");
+  const handleExit = async (reason = "click") => {
+    const exitFrom = screen;
+    setHistory(["home"]);
+    setScreen("home");
     startTimeRef.current = Date.now();
 
     const start = performance.now();
     const res = await postEvent({
       user_id: userIdRef.current,
-      screen: screen,
+      screen: exitFrom,
       next_screen: "exit",
       event_type: "exit",
       user_think_time: 0,
@@ -153,10 +169,12 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
         type: "latency",
         event_id: res.data.id,
         client_latency_ms: Math.round(elapsed),
+        exit_reason: reason,
       });
     }
 
     onRefresh && onRefresh();
+    resetIdleTimer();
   };
 
   return (
@@ -180,19 +198,19 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
         <div className="sim-help-grid">
           <div className="sim-help-item">
             <div className="sim-help-label">Step 1</div>
-            <p>左の画面で「閲覧 → カート → 購入」を操作</p>
+            <p>左の画面で「閲覧 → カート → 購入」を操作します。</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 2</div>
-            <p>右上の × で離脱のシミュレーション可能</p>
+            <p>右上の × で離脱をシミュレーションできます。</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 3</div>
-            <p>右のダッシュボードで離脱率・転換率・レイテンシを確認</p>
+            <p>右のダッシュボードで離脱率・転換率・レイテンシを確認します。</p>
           </div>
           <div className="sim-help-item">
             <div className="sim-help-label">Step 4</div>
-            <p>レイテンシバーの中央線は平均値、色は増減を示し</p>
+            <p>レイテンシバーの中央線は平均値、色は増減を示します。</p>
           </div>
         </div>
       </div>
