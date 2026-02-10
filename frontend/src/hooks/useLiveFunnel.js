@@ -12,7 +12,12 @@ export default function useLiveFunnel() {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/metrics");
+    const wsBase =
+      import.meta.env.VITE_WS_BASE ??
+      `${window.location.protocol === "https:" ? "wss" : "ws"}://${
+        window.location.hostname
+      }:8000`;
+    const ws = new WebSocket(`${wsBase}/ws/metrics`);
     wsRef.current = ws;
 
     ws.onopen = () => {

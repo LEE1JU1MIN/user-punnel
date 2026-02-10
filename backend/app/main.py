@@ -1,4 +1,6 @@
 # app/main.py
+import os
+
 from fastapi import FastAPI,WebSocket, WebSocketDisconnect
 from app.ws_manager import manager
 from app.db import engine, Base, SessionLocal
@@ -17,9 +19,17 @@ app.include_router(sessions.router)
 app.include_router(funnel.router)
 
 
+origins = ["http://localhost:5173", "http://127.0.0.1:5173", "http://192.168.40.85:5173","http://192.168.40.85:5173"]
+extra_origins = os.getenv("FRONTEND_ORIGINS")
+if extra_origins:
+    for origin in extra_origins.split(","):
+        origin = origin.strip()
+        if origin:
+            origins.append(origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
