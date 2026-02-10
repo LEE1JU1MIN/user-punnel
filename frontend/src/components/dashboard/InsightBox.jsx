@@ -32,6 +32,11 @@ export default function InsightBox({ steps, onClose }) {
 
   const focusName = worstDrop.name || "Product";
   const dropRate = worstDrop.drop_off_rate ?? 0;
+  const deltaClass = (value) => (value >= 0 ? "delta-negative" : "delta-positive");
+  const formatDelta = (value, invert = false) => {
+    const v = Math.abs(value);
+    return `${invert ? "-" : "+"}${v}%`;
+  };
 
   return (
     <div className="insight-box" data-tooltip="主要課題と改善アクションを要約">
@@ -50,48 +55,49 @@ export default function InsightBox({ steps, onClose }) {
       <div className="insight-block">
         <div className="insight-block-title">1. 問題の本質</div>
         <ul className="insight-list">
-          <li>離脱の<span className="highlight">{dropRate}%</span>が「{focusName}」で発生</li>
-          <li>興味はあるが、判断できずに離脱している</li>
-          <li>技術問題ではなく「判断が面倒になる構造」が原因</li>
+          <li>離脱の<span className="highlight">{dropRate}%</span>が「<span className="highlight">{focusName}</span>」で発生</li>
         </ul>
       </div>
 
       <div className="insight-block">
-        <div className="insight-block-title">2. なぜ離脱が起きるのか（非エンジニア向け）</div>
+        <div className="insight-block-title">2. なぜ離脱が起きるのか </div>
         <ul className="insight-list">
-          <li>ユーザーの迷い時間（考える時間）：{userDelta >= 0 ? `-${userDelta}%` : `+${Math.abs(userDelta)}%`}</li>
-          <li>十分理解する前に判断を求められている</li>
-          <li>「買って大丈夫？」を整理する時間がない</li>
-          <li>画面の待ち時間（読み込みの遅さ）：+{Math.abs(systemDelta)}%</li>
-          <li>迷っている時のローディングは離脱を加速させる</li>
+          <li>
+            ユーザーの迷い時間（考える時間）：
+            <span className={deltaClass(userDelta)}>
+              {userDelta >= 0 ? formatDelta(userDelta, true) : formatDelta(userDelta)}
+            </span>
+          </li>
+          <li>
+            画面の待ち時間（読み込みの遅さ）：
+            <span className={deltaClass(systemDelta)}>
+              {systemDelta >= 0 ? formatDelta(systemDelta) : formatDelta(systemDelta, true)}
+            </span>
+          </li>
         </ul>
-        <div className="insight-conclusion">
-          結論：考えさせるのが早すぎて、システムは遅い。購入転換に最悪の組み合わせ。
-        </div>
       </div>
 
       <div className="insight-block">
         <div className="insight-block-title">3. ビジネスインパクト</div>
         <ul className="insight-list">
-          <li>この区間はCVRと再訪意向を同時に決める最大のボトルネック</li>
-          <li>ここだけ改善すれば、全体を触らずに成果が出る</li>
-          <li>開発ROIが最も高いレバー</li>
+          <li>この区間は離脱が集中しており、改善候補として優先度が高い</li>
+          <li>改善の効果はCVRや再訪意向に反映される可能性がある</li>
         </ul>
       </div>
 
       <div className="insight-block">
         <div className="insight-block-title">4. 戦略的優先度</div>
         <div className="insight-note">
-          “判断コスト” と “待ち時間コスト” を同時に消す設計が最優先
+          “判断コスト” と “待ち時間コスト” の低減が優先度の高い改善テーマ
         </div>
       </div>
 
       <div className="insight-block insight-actions">
-        <div className="insight-block-title">Action Plan（意思決定向け）</div>
+        <div className="insight-block-title">Action Plan（候補）</div>
         <ol className="insight-list ordered">
           <li>判断負担の除去：レビュー・保証・配送を上部に集約</li>
           <li>行動摩擦の除去：CTAの視覚優先度を強化</li>
-          <li>成果指標：Product離脱 −5pt / 平均Latency −20%</li>
+          <li>検証指標：離脱率 / 平均Latency / CVR の変化</li>
         </ol>
       </div>
     </div>
