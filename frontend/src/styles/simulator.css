@@ -225,6 +225,18 @@
   gap: 10px;
 }
 
+@media (max-width: 960px) {
+  .sim-wrap {
+    gap: 14px;
+    align-items: center;
+  }
+
+  .sim-help {
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
 .status-bar {
   display: flex;
   justify-content: space-between;
