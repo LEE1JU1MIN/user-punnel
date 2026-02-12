@@ -1,0 +1,28 @@
+export const TOOLTIPS = {
+  DASHBOARD_TITLE: "ファネル全体のレイテンシ分析",
+  DASHBOARD_SUB: "ユーザー行動とシステム性能の関係",
+  WS_BADGE:
+    "WebSocketとは「画面とサーバーがずっとつながっている電話」のような仕組みです。ボタンを押した瞬間に数字が変わるので、何が起きたかをすぐに確認できます。普通の通信だと更新が遅れるため、リアルタイム性を見せるために使っています。",
+  RESET_DATA:
+    "データを初期化し、最初の状態から再計測します。テスト中の結果をリセットしたい時に使います。",
+  INSIGHT_TOGGLE: "Insight(要点と改善提案)を表示/非表示に切り替えます。",
+  FUNNEL_STEPS_TITLE: "ステップ別の指標一覧",
+  STEP_NAME: "ファネルステップ",
+  RISK_BADGE: "離脱率が最も高いステップ",
+  CONVERSION_RATE: "ホームからの到達率",
+  USERS_LABEL: "このステップに到達したユーザー数",
+  DROPOFF_LABEL: "このステップで離脱した割合",
+  DROPOFF_ROW: "このステップで離脱した割合",
+  AVG_PANEL: "ステップ別の平均レイテンシ",
+  KPI_TOTAL: "ホーム到達ユーザー数",
+  KPI_CONVERSION: "成功までの全体転換率",
+  KPI_EXIT: "離脱ボタンを押したユーザー数",
+  KPI_WORST: "遅延が最も大きいステップ",
+  LATENCY_SYSTEM_LABEL: "サーバー側で計測した処理遅延（server latency）",
+  LATENCY_SYSTEM_VALUE: "システム遅延（平均との差分）",
+  LATENCY_USER_LABEL: "ユーザーの思考時間（user_think_time）",
+  LATENCY_TRACK: "中央値は中央線、平均との差分はバーの長さで表示",
+  LATENCY_USER_VALUE: "ユーザー遅延（平均との差分）",
+  INSIGHT_BOX: "主要課題と改善アクションを要約",
+  INSIGHT_CLOSE: "Insightを閉じる",
+};

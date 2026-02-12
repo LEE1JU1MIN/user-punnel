@@ -11,6 +11,7 @@ import SuccessPage from "../components/simulator/SuccessPage";
 import ExitPage from "../components/simulator/ExitPage";
 
 import { postEvent } from "../services/eventApi";
+import { FUNNEL_STEPS } from "../constants/funnelSteps";
 
 import "../styles/simulator.css";
 
@@ -31,12 +32,13 @@ const PREV = {
 const createUserId = () => `user_${Math.random().toString(36).slice(2, 8)}`;
 
 export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency }) {
-  const [screen, setScreen] = useState("home");
-  const [history, setHistory] = useState(["home"]);
+  const defaultStep = FUNNEL_STEPS[0];
+  const [screen, setScreen] = useState(defaultStep);
+  const [history, setHistory] = useState([defaultStep]);
   const [loading, setLoading] = useState(false);
   const startTimeRef = useRef(Date.now());
   const userIdRef = useRef(createUserId());
-  const prevScreenRef = useRef("home");
+  const prevScreenRef = useRef(defaultStep);
   const idleTimerRef = useRef(null);
 
   const resetIdleTimer = useCallback(() => {
@@ -50,13 +52,13 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
     const prevScreen = prevScreenRef.current;
     prevScreenRef.current = screen;
 
-    if (!(prevScreen === "exit" && screen === "home")) return;
+    if (!(prevScreen === "exit" && screen === defaultStep)) return;
 
     userIdRef.current = createUserId();
     postEvent({
       user_id: userIdRef.current,
-      screen: "home",
-      next_screen: "home",
+      screen: defaultStep,
+      next_screen: defaultStep,
       event_type: "enter",
       user_think_time: 0,
       system_latency: 0,
@@ -114,7 +116,7 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
     if (loading || history.length < 2) return;
     setHistory((prev) => {
       const updated = prev.slice(0, -1);
-      const previousScreen = updated[updated.length - 1] || "home";
+      const previousScreen = updated[updated.length - 1] || defaultStep;
       setScreen(previousScreen);
       startTimeRef.current = Date.now();
       return updated;
@@ -123,8 +125,8 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   };
 
   const handleReset = () => {
-    setHistory(["home"]);
-    setScreen("home");
+    setHistory([defaultStep]);
+    setScreen(defaultStep);
     startTimeRef.current = Date.now();
     resetIdleTimer();
   };

@@ -1,3 +1,5 @@
+import { TOOLTIPS } from "../../constants/tooltips";
+
 export default function InsightBox({ steps, onClose }) {
   if (!steps || steps.length === 0) return null;
 
@@ -39,14 +41,14 @@ export default function InsightBox({ steps, onClose }) {
   };
 
   return (
-    <div className="insight-box" data-tooltip="主要課題と改善アクションを要約">
+    <div className="insight-box" data-tooltip={TOOLTIPS.INSIGHT_BOX}>
       <div className="insight-header">
         <strong>核心インサイト</strong>
         <button
           type="button"
           className="insight-close"
           onClick={onClose}
-          data-tooltip="Insightを閉じる"
+          data-tooltip={TOOLTIPS.INSIGHT_CLOSE}
         >
           Hide Insight
         </button>

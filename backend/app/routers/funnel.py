@@ -3,17 +3,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.db import get_db
 from app.models.event import Event as EventModel
+from app.constants import FUNNEL_STEPS
 
 
 router = APIRouter(prefix="/funnel", tags=["funnel"])
 
 
-@router.get("/summary")
-def funnel_summary(db: Session = Depends(get_db)):
-    steps = ["home", "product", "cart", "success"]
-    summary = []
-
-    exit_count = (
+def get_exit_count(db: Session, steps: list[str]) -> int:
+    return (
         db.query(EventModel)
         .filter(
             EventModel.event_type == "exit",
@@ -22,27 +19,32 @@ def funnel_summary(db: Session = Depends(get_db)):
         .count()
     )
 
-    total_sessions = (
+
+def get_total_sessions(db: Session) -> int:
+    return (
         db.query(EventModel.user_id)
         .filter(EventModel.screen == "home")
         .distinct()
         .count()
     )
 
-    counts_by_step = {}
+
+def get_counts_by_step(db: Session, steps: list[str]) -> dict[str, int]:
+    counts: dict[str, int] = {}
     for step in steps:
-        counts_by_step[step] = (
+        counts[step] = (
             db.query(EventModel.user_id)
             .filter(EventModel.screen == step)
             .distinct()
             .count()
         )
+    return counts
 
-    worst_step = None
-    worst_latency = -1
-    exits_by_step = {}
+
+def get_exits_by_step(db: Session, steps: list[str]) -> dict[str, int]:
+    exits: dict[str, int] = {}
     for step in steps:
-        exits_by_step[step] = (
+        exits[step] = (
             db.query(EventModel)
             .filter(
                 EventModel.event_type == "exit",
@@ -50,6 +52,50 @@ def funnel_summary(db: Session = Depends(get_db)):
             )
             .count()
         )
+    return exits
+
+
+def get_latest_event(db: Session, step: str) -> EventModel | None:
+    return (
+        db.query(EventModel)
+        .filter(
+            EventModel.screen == step,
+            EventModel.event_type == "navigate"
+        )
+        .order_by(EventModel.timestamp.desc())
+        .first()
+    )
+
+
+def get_avg_latency(db: Session, step: str) -> tuple[float, float]:
+    avg_system = (
+        db.query(func.avg(EventModel.system_latency))
+        .filter(
+            EventModel.screen == step,
+            EventModel.event_type == "navigate"
+        ).scalar() or 0
+    )
+    avg_user = (
+        db.query(func.avg(EventModel.user_think_time))
+        .filter(
+            EventModel.screen == step,
+            EventModel.event_type == "navigate"
+        ).scalar() or 0
+    )
+    return avg_system, avg_user
+
+
+@router.get("/summary")
+def funnel_summary(db: Session = Depends(get_db)):
+    steps = FUNNEL_STEPS
+    summary = []
+
+    exit_count = get_exit_count(db, steps)
+    total_sessions = get_total_sessions(db)
+    counts_by_step = get_counts_by_step(db, steps)
+    exits_by_step = get_exits_by_step(db, steps)
+    worst_step = None
+    worst_latency = -1
 
     for idx, step in enumerate(steps):
         count = counts_by_step.get(step, 0)
@@ -58,30 +104,12 @@ def funnel_summary(db: Session = Depends(get_db)):
         conversion = round((count / total_sessions) * 100,
                            2) if total_sessions else 0
 
-        latest_event = (
-            db.query(EventModel)
-            .filter(
-                EventModel.screen == step,
-                EventModel.event_type == "navigate"
-            )
-            .order_by(EventModel.timestamp.desc())
-            .first()
-        )
+        latest_event = get_latest_event(db, step)
 
         latest_system = latest_event.system_latency if latest_event else 0
         latest_user = latest_event.user_think_time if latest_event else 0
 
-        avg_system = db.query(func.avg(EventModel.system_latency))\
-            .filter(
-                EventModel.screen == step,
-                EventModel.event_type == "navigate"
-            ).scalar() or 0
-
-        avg_user = db.query(func.avg(EventModel.user_think_time))\
-            .filter(
-                EventModel.screen == step,
-                EventModel.event_type == "navigate"
-            ).scalar() or 0
+        avg_system, avg_user = get_avg_latency(db, step)
 
         if exit_count == 0:
             drop_off_rate = 0

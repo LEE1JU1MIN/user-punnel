@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TOOLTIPS } from "../../constants/tooltips";
 
 export default function LatencyBar({
   system,
@@ -47,7 +48,7 @@ export default function LatencyBar({
       <div className="latency-row" >
         <div
           className="latency-label"
-          data-tooltip="サーバー側で計測した処理遅延（server latency）"
+          data-tooltip={TOOLTIPS.LATENCY_SYSTEM_LABEL}
         >
           System
         </div>
@@ -70,7 +71,7 @@ export default function LatencyBar({
             />
           </div>
         </div>
-        <div className={`latency-value ${systemDeltaClass}`} data-tooltip="システム遅延（平均との差分）">
+        <div className={`latency-value ${systemDeltaClass}`} data-tooltip={TOOLTIPS.LATENCY_SYSTEM_VALUE}>
           <span>{system}ms</span>
           {systemDeltaValue !== null && <em>{formatDelta(systemDeltaValue)}</em>}
         </div>
@@ -78,11 +79,11 @@ export default function LatencyBar({
       <div className="latency-row">
         <div
           className="latency-label"
-          data-tooltip="ユーザーの思考時間（user_think_time）"
+          data-tooltip={TOOLTIPS.LATENCY_USER_LABEL}
         >
           User
         </div>
-        <div className="latency-track" data-tooltip="中央値は中央線、平均との差分はバーの長さで表示">
+        <div className="latency-track" data-tooltip={TOOLTIPS.LATENCY_TRACK}>
           <div
             className="latency-fill-wrap"
             style={{
@@ -101,7 +102,7 @@ export default function LatencyBar({
             />
           </div>
         </div>
-        <div className={`latency-value ${userDeltaClass}`} data-tooltip="ユーザー遅延（平均との差分）">
+        <div className={`latency-value ${userDeltaClass}`} data-tooltip={TOOLTIPS.LATENCY_USER_VALUE}>
           <span>{user}ms</span>
           {userDeltaValue !== null && <em>{formatDelta(userDeltaValue)}</em>}
         </div>

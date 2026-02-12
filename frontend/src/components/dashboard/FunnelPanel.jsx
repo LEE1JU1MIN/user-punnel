@@ -1,13 +1,12 @@
 import FunnelRow from "./FunnelRow";
-import InsightBox from "./InsightBox";
 import DropoffChart from "./DropoffChart";
+import { TOOLTIPS } from "../../constants/tooltips";
 
 export default function FunnelPanel({
   data,
   loading,
   error,
   currentScreen,
-  showInsight = true,
   onToggleInsight,
   insightOpen = true,
 }) {
@@ -43,13 +42,13 @@ export default function FunnelPanel({
                 type="button"
                 className="dashboard-insight-toggle"
                 onClick={onToggleInsight}
-                data-tooltip="Insight(要点と改善提案)を表示/非表示に切り替えます。"
+                data-tooltip={TOOLTIPS.INSIGHT_TOGGLE}
               >
                 {insightOpen ? "Hide Insight" : "Show Insight"}
               </button>
             </div>
           )}
-          <h2 className="section-title" data-tooltip="ステップ別の指標一覧">Funnel Steps_RealTime</h2>
+          <h2 className="section-title" data-tooltip={TOOLTIPS.FUNNEL_STEPS_TITLE}>Funnel Steps_RealTime</h2>
         </div>
       )}
 
@@ -66,7 +65,7 @@ export default function FunnelPanel({
       ))}
 
       {!loading && !error && steps.length > 0 && (
-        <section className="avg-panel" data-tooltip="ステップ別の平均レイテンシ">
+        <section className="avg-panel" data-tooltip={TOOLTIPS.AVG_PANEL}>
           <div className="avg-title">Average Latency by Step</div>
           <div className="avg-grid">
             {steps.map((step, idx) => (
@@ -90,19 +89,19 @@ export default function FunnelPanel({
         <section className="kpi-panel">
           <div className="kpi-title">KPI</div>
           <div className="kpi-row">
-            <div className="kpi-card" data-tooltip="ホーム到達ユーザー数">
+            <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_TOTAL}>
               <div className="kpi-label">Total Users</div>
               <div className="kpi-value">{kpis.total_users ?? 0}</div>
             </div>
-            <div className="kpi-card" data-tooltip="成功までの全体転換率">
+            <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_CONVERSION}>
               <div className="kpi-label">Overall Conversion</div>
               <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
             </div>
-            <div className="kpi-card" data-tooltip="離脱ボタンを押したユーザー数">
+            <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_EXIT}>
               <div className="kpi-label">Exit Count</div>
               <div className="kpi-value">{exitCount}</div>
             </div>
-            <div className="kpi-card" data-tooltip="遅延が最も大きいステップ">
+            <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_WORST}>
               <div className="kpi-label">Worst Step</div>
               <div className="kpi-value">{worstLabel}</div>
             </div>
@@ -110,9 +109,6 @@ export default function FunnelPanel({
         </section>
       )}
 
-      {!loading && !error && steps.length > 0 && showInsight && (
-        <InsightBox steps={steps} />
-      )}
     </section>
   );
 }

@@ -6,7 +6,6 @@ class EventCreate(BaseModel):
     user_id: str
     screen: str
     next_screen: str
-    event_type: str
     user_think_time: int
     system_latency: int
     timestamp: datetime

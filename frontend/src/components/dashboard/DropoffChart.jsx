@@ -1,3 +1,5 @@
+import { TOOLTIPS } from "../../constants/tooltips";
+
 export default function DropoffChart({ steps }) {
   return (
     <section className="dropoff-chart">
@@ -13,7 +15,7 @@ export default function DropoffChart({ steps }) {
           const value = step.drop_off_rate ?? 0;
           const width = Math.min(Math.max(value, 0), 100);
           return (
-            <div key={step.step ?? idx} className="chart-row" data-tooltip="このステップで離脱した割合">
+            <div key={step.step ?? idx} className="chart-row" data-tooltip={TOOLTIPS.DROPOFF_ROW}>
               <div className="chart-label">
                 <span className="chart-step">{step.name}</span>
                 <span className="chart-value">{value}%</span>
