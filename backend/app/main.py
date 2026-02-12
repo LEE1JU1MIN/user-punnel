@@ -19,7 +19,7 @@ app.include_router(sessions.router)
 app.include_router(funnel.router)
 
 
-origins = ["http://localhost:5173", "http://127.0.0.1:5173","https://user-punnel-ahurjdnff-lee1ju1mins-projects.vercel.app"]
+origins = ["http://localhost:5173", "http://127.0.0.1:5173","https://user-punnel.vercel.app"]
 extra_origins = os.getenv("FRONTEND_ORIGINS")
 if extra_origins:
     for origin in extra_origins.split(","):
