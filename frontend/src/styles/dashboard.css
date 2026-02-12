@@ -21,6 +21,24 @@
   font-family: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
 }
 
+@media (max-width: 960px) {
+  .dashboard {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .dashboard-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .dashboard-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 /* Tooltip */
 
 [data-tooltip] {
