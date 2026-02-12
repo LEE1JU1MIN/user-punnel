@@ -19,7 +19,7 @@ app.include_router(sessions.router)
 app.include_router(funnel.router)
 
 
-origins = ["http://localhost:5173", "http://127.0.0.1:5173", "http://192.168.40.85:5173","http://192.168.40.85:5173"]
+origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
 extra_origins = os.getenv("FRONTEND_ORIGINS")
 if extra_origins:
     for origin in extra_origins.split(","):
