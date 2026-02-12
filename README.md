@@ -152,18 +152,13 @@ npm run dev
 ---
 
 ## スクリーンショット
-スクリーンショットを以下に追加してください:
-```
-assets/
-  dashboard.png
-  simulator.png
-```
-
-README への挿入例:
-```md
-![Dashboard](assets/dashboard.png)
-![Simulator](assets/simulator.png)
-```
+![Dashboard](asset/dashboard1.png)
+![Dashboard 2](asset/dashboard2.png)
+![Dashboard 3](asset/dashboard3.png)
+![Dashboard 4](asset/dashboard4.png)
+![Simulator](asset/simulator1.png)
+![Simulator 2](asset/simulator2.png)
+![Simulator 3](asset/simulator3.png)
 
 ---
 
