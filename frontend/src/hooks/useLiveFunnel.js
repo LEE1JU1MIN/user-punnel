@@ -5,10 +5,6 @@ export default function useLiveFunnel() {
   const wsRef = useRef(null);
   const [connected, setConnected] = useState(false);
 
-  const wsUrl =
-    import.meta.env.VITE_WS_URL ??
-    `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.hostname}:8000/ws/metrics`;
-
   const send = useCallback((payload) => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(payload));
@@ -16,10 +12,19 @@ export default function useLiveFunnel() {
   }, []);
 
   useEffect(() => {
+    const wsUrl =
+      import.meta.env.VITE_WS_URL ??
+      `${window.location.protocol === "https:" ? "wss" : "ws"}://${
+        window.location.hostname
+      }:8000/ws/metrics`;
+    console.log("WS URL:", wsUrl);
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
-    ws.onopen = () => setConnected(true);
+    ws.onopen = () => {
+      setConnected(true);
+    };
+
     ws.onmessage = (event) => {
       try {
         const payload = JSON.parse(event.data);
@@ -28,13 +33,24 @@ export default function useLiveFunnel() {
         console.error("WS parse error", e);
       }
     };
-    ws.onerror = () => setConnected(false);
-    ws.onclose = () => setConnected(false);
 
-    return () => ws.close();
-  }, [wsUrl]);
+    ws.onerror = (err) => {
+      console.error("WS error", err);
+      setConnected(false);
+    };
 
-  const reset = useCallback(() => setLiveData(null), []);
+    ws.onclose = () => {
+      setConnected(false);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  const reset = useCallback(() => {
+    setLiveData(null);
+  }, []);
 
   return { liveData, send, reset, connected };
 }
