@@ -16,11 +16,11 @@ import { FUNNEL_STEPS } from "../constants/funnelSteps";
 import "../styles/simulator.css";
 
 const TITLES = {
-  home: "Discover",
-  product: "Product",
-  cart: "Checkout",
-  success: "Done",
-  exit: "Exit",
+  home: "ホーム",
+  product: "商品",
+  cart: "決済",
+  success: "完了",
+  exit: "離脱",
 };
 
 const PREV = {
@@ -36,6 +36,7 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   const [screen, setScreen] = useState(defaultStep);
   const [history, setHistory] = useState([defaultStep]);
   const [loading, setLoading] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(true);
   const startTimeRef = useRef(Date.now());
   const userIdRef = useRef(createUserId());
   const prevScreenRef = useRef(defaultStep);
@@ -181,6 +182,41 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
 
   return (
     <div className="sim-wrap">
+      <div className="sim-frame-title">ショッピングモールシミュレーター</div>
+      <button
+        type="button"
+        className="sim-guide-toggle"
+        onClick={() => setGuideOpen((v) => !v)}
+      >
+        {guideOpen ? "操作ガイドを閉じる" : "操作ガイドを表示"}
+      </button>
+      {guideOpen && (
+        <div className="sim-help">
+          <div className="sim-help-title">操作ガイド</div>
+          <div className="sim-help-note">
+            左側のスマホ画面はショッピング体験を再現するシミュレーターです。操作に合わせて、
+            右側ダッシュボードの離脱率・到達率・レイテンシがリアルタイムで更新されます。
+          </div>
+          <div className="sim-help-grid">
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 1</div>
+              <p>「商品を見る」から開始し、商品詳細へ進みます。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 2</div>
+              <p>「カートに入れる」から決済画面へ進みます。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 3</div>
+              <p>右上の × で離脱を再現できます。離脱はダッシュボードへ即時反映されます。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 4</div>
+              <p>レイテンシバーは中央が平均、右(緑)が速い、左(赤)が遅いことを示します。</p>
+            </div>
+          </div>
+        </div>
+      )}
       <MobileFrame>
         <div className="sim-shell">
           <StatusBar />
@@ -195,27 +231,6 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
           </div>
         </div>
       </MobileFrame>
-      <div className="sim-help">
-        <div className="sim-help-title">操作ガイド</div>
-        <div className="sim-help-grid">
-          <div className="sim-help-item">
-            <div className="sim-help-label">Step 1</div>
-            <p>左の画面で「閲覧 → カート → 購入」を操作します。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">Step 2</div>
-            <p>右上の × で離脱をシミュレーションできます。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">Step 3</div>
-            <p>右のダッシュボードで離脱率・転換率・レイテンシを確認します。</p>
-          </div>
-          <div className="sim-help-item">
-            <div className="sim-help-label">Step 4</div>
-            <p>レイテンシバーの中央線は平均値、色は増減を示します。</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

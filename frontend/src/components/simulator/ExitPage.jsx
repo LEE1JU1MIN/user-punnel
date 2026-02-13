@@ -1,11 +1,11 @@
 export default function ExitPage({ onEnter }) {
   return (
-    <div className="sim-page success">
+    <div className="sim-page exit">
       <div className="badge">✕</div>
-      <h2>Exited</h2>
-      <p className="muted">You left the store.</p>
+      <h2>離脱しました</h2>
+      <p className="muted">お店を離れました。</p>
       <button className="primary wide" onClick={onEnter}>
-        Back to home
+        ホームへ戻る
       </button>
     </div>
   );

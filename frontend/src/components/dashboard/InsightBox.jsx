@@ -50,7 +50,7 @@ export default function InsightBox({ steps, onClose }) {
           onClick={onClose}
           data-tooltip={TOOLTIPS.INSIGHT_CLOSE}
         >
-          Hide Insight
+          Insightを閉じる
         </button>
       </div>
 

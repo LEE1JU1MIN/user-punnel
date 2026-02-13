@@ -44,7 +44,7 @@ export default function FunnelPanel({
                 onClick={onToggleInsight}
                 data-tooltip={TOOLTIPS.INSIGHT_TOGGLE}
               >
-                {insightOpen ? "Hide Insight" : "Show Insight"}
+                {insightOpen ? "Insightを閉じる" : "Insightを表示"}
               </button>
             </div>
           )}
@@ -66,7 +66,7 @@ export default function FunnelPanel({
 
       {!loading && !error && steps.length > 0 && (
         <section className="avg-panel" data-tooltip={TOOLTIPS.AVG_PANEL}>
-          <div className="avg-title">Average Latency by Step</div>
+          <div className="avg-title">ステップ別平均レイテンシ</div>
           <div className="avg-grid">
             {steps.map((step, idx) => (
               <div key={`avg-${step.step ?? idx}`} className="avg-card">
@@ -90,19 +90,19 @@ export default function FunnelPanel({
           <div className="kpi-title">KPI</div>
           <div className="kpi-row">
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_TOTAL}>
-              <div className="kpi-label">Total Users</div>
+              <div className="kpi-label">総ユーザー</div>
               <div className="kpi-value">{kpis.total_users ?? 0}</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_CONVERSION}>
-              <div className="kpi-label">Overall Conversion</div>
+              <div className="kpi-label">全体到達率</div>
               <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_EXIT}>
-              <div className="kpi-label">Exit Count</div>
+              <div className="kpi-label">離脱数</div>
               <div className="kpi-value">{exitCount}</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_WORST}>
-              <div className="kpi-label">Worst Step</div>
+              <div className="kpi-label">要注意ステップ</div>
               <div className="kpi-value">{worstLabel}</div>
             </div>
           </div>

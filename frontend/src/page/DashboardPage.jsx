@@ -26,7 +26,7 @@ export default function DashboardPage({
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="dashboard-header-top">
-          <h1 data-tooltip={TOOLTIPS.DASHBOARD_TITLE}>Funnel Latency Analysis</h1>
+          <h1 data-tooltip={TOOLTIPS.DASHBOARD_TITLE}>顧客離脱ファネル分析</h1>
           <div className="dashboard-actions">
             <div
               className={`ws-badge ${wsConnected ? "online" : "offline"}`}
@@ -42,11 +42,11 @@ export default function DashboardPage({
               disabled={clearing}
               data-tooltip={TOOLTIPS.RESET_DATA}
             >
-              {clearing ? "Clearing…" : "Reset Data"}
+              {clearing ? "初期化中…" : "データ初期化"}
             </button>
           </div>
         </div>
-        <p data-tooltip={TOOLTIPS.DASHBOARD_SUB}>User flow x system performance</p>
+        <p data-tooltip={TOOLTIPS.DASHBOARD_SUB}>ユーザー行動 × システム性能</p>
       </header>
 
       {insightOpen && !loading && !error && data?.steps?.length > 0 && (
