@@ -50,7 +50,7 @@ export default function LatencyBar({
           className="latency-label"
           data-tooltip={TOOLTIPS.LATENCY_SYSTEM_LABEL}
         >
-          System
+          System latency
         </div>
         <div className="latency-track">
           <div
@@ -81,7 +81,7 @@ export default function LatencyBar({
           className="latency-label"
           data-tooltip={TOOLTIPS.LATENCY_USER_LABEL}
         >
-          User
+          User Thinking Time
         </div>
         <div className="latency-track" data-tooltip={TOOLTIPS.LATENCY_TRACK}>
           <div

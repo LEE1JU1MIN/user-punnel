@@ -94,7 +94,7 @@ export default function FunnelPanel({
               <div className="kpi-value">{kpis.total_users ?? 0}</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_CONVERSION}>
-              <div className="kpi-label">全体到達率</div>
+              <div className="kpi-label">全体購入到達率</div>
               <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_EXIT}>

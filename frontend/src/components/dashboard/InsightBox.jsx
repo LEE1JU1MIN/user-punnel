@@ -57,7 +57,7 @@ export default function InsightBox({ steps, onClose }) {
       <div className="insight-block">
         <div className="insight-block-title">1. 問題の本質</div>
         <ul className="insight-list">
-          <li>離脱の<span className="highlight">{dropRate}%</span>が「<span className="highlight">{focusName}</span>」で発生</li>
+          <li>ページを見るのをやめる確率<span className="highlight">{dropRate}%</span>が「<span className="highlight">{focusName}</span>」で発生</li>
         </ul>
       </div>
 
