@@ -17,7 +17,6 @@ export default function useLiveFunnel() {
       `${window.location.protocol === "https:" ? "wss" : "ws"}://${
         window.location.hostname
       }:8000/ws/metrics`;
-    console.log("WS URL:", wsUrl);
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 

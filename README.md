@@ -3,7 +3,7 @@
 ## LIVE DEMO
 # [https://user-punnel.vercel.app](https://user-punnel.vercel.app)
 
-> 포트폴리오 심사 시 위 링크에 바로 접속하면 동작하는 데모를 확인할 수 있습니다.
+> ポートフォリオ審査時は、上記リンクにアクセスするだけで動作デモを確認できます。
 
 左側はECフロー（ホーム → 商品 → カート → 成功/離脱）シミュレーター、右側はリアルタイムのファネル指標（離脱分布、コンバージョン率、レイテンシ）を表示するダッシュボードです。非エンジニアでも理解できるように、インサイトとアクションプランを併せて提供します。
 
@@ -38,7 +38,7 @@
 ## 技術スタック
 - **Frontend**: React + Vite, Axios
 - **Backend**: FastAPI, SQLAlchemy
-- **Database**: PostgreSQL（`funnel_analytics`）
+- **Database**: PostgreSQL
 - **Realtime**: WebSocket（`/ws/metrics`）
 
 ---
@@ -74,9 +74,10 @@ frontend/
 `requirements.txt`
 ```
 fastapi
-uvicorn
+uvicorn[standard]
 sqlalchemy
 psycopg2-binary
+pydantic
 ```
 
 **インストールと起動**
@@ -86,9 +87,9 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r ../requirements.txt
 
-# PostgreSQL DB が必要:
-#   DB名: funnel_analytics
-#   URL: postgresql://localhost/funnel_analytics
+# 環境変数（例）
+#   DATABASE_URL=postgresql://localhost/funnel_analytics
+#   FRONTEND_ORIGINS=http://localhost:5173,https://user-punnel.vercel.app
 
 uvicorn app.main:app --reload
 ```
@@ -101,6 +102,12 @@ npm run dev
 ```
 
 アクセス: `http://localhost:5173`
+
+### 3) フロントエンド環境変数（本番）
+```bash
+VITE_API_BASE_URL=https://user-punnel.onrender.com
+VITE_WS_URL=wss://user-punnel.onrender.com/ws/metrics
+```
 
 ---
 
@@ -194,7 +201,7 @@ npm run dev
 ---
 
 ## 参考
-- DB 接続文字列は `backend/app/db.py` にハードコード
+- DB 接続は `DATABASE_URL` 環境変数で管理（`backend/app/db.py`）
 - ダッシュボード上部に WS 接続状態バッジを表示
 
 ---
