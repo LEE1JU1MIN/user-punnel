@@ -36,7 +36,7 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   const [screen, setScreen] = useState(defaultStep);
   const [history, setHistory] = useState([defaultStep]);
   const [loading, setLoading] = useState(false);
-  const [guideOpen, setGuideOpen] = useState(true);
+  const [guideOpen, setGuideOpen] = useState(false);
   const startTimeRef = useRef(Date.now());
   const userIdRef = useRef(createUserId());
   const prevScreenRef = useRef(defaultStep);

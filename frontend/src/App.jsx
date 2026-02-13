@@ -15,7 +15,7 @@ export default function App() {
   const mergedData = liveData ?? data;
   const [showDashboard, setShowDashboard] = useState(false);
   const [clearing, setClearing] = useState(false);
-  const [insightOpen, setInsightOpen] = useState(true);
+  const [insightOpen, setInsightOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setShowDashboard(true), 250);
