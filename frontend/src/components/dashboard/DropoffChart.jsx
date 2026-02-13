@@ -5,7 +5,7 @@ export default function DropoffChart({ steps }) {
     <section className="dropoff-chart">
       <div className="chart-header">
         <div>
-          <div className="chart-title">ステップ別離脱率</div>
+          <div className="chart-title">ステップ別 離脱分布</div>
           <div className="chart-sub">離脱率（×クリック基準）</div>
         </div>
       </div>

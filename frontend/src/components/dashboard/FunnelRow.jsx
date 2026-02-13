@@ -1,7 +1,15 @@
 import LatencyBar from "./LatencyBar";
 import { TOOLTIPS } from "../../constants/tooltips";
 
+const STEP_LABELS = {
+  home: "ホーム",
+  product: "商品",
+  cart: "カート",
+  success: "購入完了",
+};
+
 export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, isRisk }) {
+  const stepLabel = STEP_LABELS[step.step] ?? step.name;
   const systemMs = step.system_latency_ms ?? 0;
   const userMs = step.user_think_time_ms ?? 0;
   const systemStatus =
@@ -27,13 +35,13 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
         <div className="funnel-left">
           <span className="step-index">{index}</span>
           <span className="step-name" data-tooltip={TOOLTIPS.STEP_NAME}>
-            {step.name}
+            {stepLabel} ページ
           </span>
         </div>
         <div className="row-top-right">
-          {isRisk && <span className="risk-badge" data-tooltip={TOOLTIPS.RISK_BADGE}>要注意</span>}
+          {isRisk && <span className="risk-badge" data-tooltip={TOOLTIPS.RISK_BADGE}>Risk</span>}
           <div className="conversion" data-tooltip={TOOLTIPS.CONVERSION_RATE}>
-            {step.conversion_rate}% <span className="conversion-label">購入到達率</span>
+            {step.conversion_rate}% <span className="conversion-label">到達率</span>
           </div>
         </div>
       </div>
@@ -41,11 +49,11 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
       <div className="row-bottom">
         <div className="row-stats">
           <div className="stat">
-            <div className="stat-label" data-tooltip={TOOLTIPS.USERS_LABEL}>ユーザー数</div>
+            <div className="stat-label" data-tooltip={TOOLTIPS.USERS_LABEL}>Users</div>
             <div className="stat-value">{step.total_users ?? 0}</div>
           </div>
           <div className="stat">
-            <div className="stat-label" data-tooltip={TOOLTIPS.DROPOFF_LABEL}>ページ離脱率</div>
+            <div className="stat-label" data-tooltip={TOOLTIPS.DROPOFF_LABEL}>離脱率</div>
             <div className="stat-value">{step.drop_off_rate ?? 0}%</div>
           </div>
         </div>

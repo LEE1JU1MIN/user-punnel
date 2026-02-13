@@ -24,5 +24,5 @@ export const TOOLTIPS = {
   LATENCY_TRACK: "中央値は中央線、平均との差分はバーの長さで表示",
   LATENCY_USER_VALUE: "ユーザー遅延（平均との差分）",
   INSIGHT_BOX: "主要課題と改善アクションを要約",
-  INSIGHT_CLOSE: "Insightを閉じる",
+  INSIGHT_CLOSE: "インサイトを閉じる",
 };

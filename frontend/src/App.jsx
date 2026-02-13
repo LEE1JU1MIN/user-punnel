@@ -28,7 +28,7 @@ export default function App() {
         left={<SimulatorPage onRefresh={refresh} onScreenChange={setCurrentScreen} onSendLatency={send} />}
         right={
           showDashboard ? (
-            <Suspense fallback={<div className="dashboard-skeleton">Loading dashboard… (1~3分ほどお待ちください)</div>}>
+            <Suspense fallback={<div className="dashboard-skeleton">読み込み中…（1〜3分ほどお待ちください）</div>}>
                 <DashboardPage
                   data={mergedData}
                   loading={loading}
@@ -52,7 +52,7 @@ export default function App() {
                 />
             </Suspense>
           ) : (
-            <div className="dashboard-skeleton">Loading dashboard…</div>
+            <div className="dashboard-skeleton">読み込み中…</div>
           )
         }
       />

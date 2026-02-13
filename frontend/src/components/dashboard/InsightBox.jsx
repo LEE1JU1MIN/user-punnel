@@ -43,26 +43,26 @@ export default function InsightBox({ steps, onClose }) {
   return (
     <div className="insight-box" data-tooltip={TOOLTIPS.INSIGHT_BOX}>
       <div className="insight-header">
-        <strong>核心インサイト</strong>
+        <strong>重要インサイト</strong>
         <button
           type="button"
           className="insight-close"
           onClick={onClose}
           data-tooltip={TOOLTIPS.INSIGHT_CLOSE}
         >
-          Insightを閉じる
+          インサイトを閉じる
         </button>
       </div>
 
       <div className="insight-block">
-        <div className="insight-block-title">1. 問題の本質</div>
+        <div className="insight-block-title">1. 主要課題</div>
         <ul className="insight-list">
-          <li>ページを見るのをやめる確率<span className="highlight">{dropRate}%</span>が「<span className="highlight">{focusName}</span>」で発生</li>
+          <li>離脱の<span className="highlight">{dropRate}%</span>が「<span className="highlight">{focusName}</span>」で発生</li>
         </ul>
       </div>
 
       <div className="insight-block">
-        <div className="insight-block-title">2. なぜ離脱が起きるのか </div>
+        <div className="insight-block-title">2. 離脱要因（数値ベース）</div>
         <ul className="insight-list">
           <li>
             ユーザーの迷い時間（考える時間）：
@@ -80,7 +80,7 @@ export default function InsightBox({ steps, onClose }) {
       </div>
 
       <div className="insight-block">
-        <div className="insight-block-title">3. ビジネスインパクト</div>
+        <div className="insight-block-title">3. ビジネス影響</div>
         <ul className="insight-list">
           <li>この区間は離脱が集中しており、改善候補として優先度が高い</li>
           <li>改善の効果はCVRや再訪意向に反映される可能性がある</li>
@@ -88,7 +88,7 @@ export default function InsightBox({ steps, onClose }) {
       </div>
 
       <div className="insight-block">
-        <div className="insight-block-title">4. 戦略的優先度</div>
+        <div className="insight-block-title">4. 優先度</div>
         <div className="insight-note">
           “判断コスト” と “待ち時間コスト” の低減が優先度の高い改善テーマ
         </div>

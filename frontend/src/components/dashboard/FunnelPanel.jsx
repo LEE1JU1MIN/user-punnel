@@ -23,12 +23,12 @@ export default function FunnelPanel({
 
   return (
     <section className="funnel-panel">
-      {loading && <p className="empty-state">Loading funnel metrics…</p>}
+      {loading && <p className="empty-state">読み込み中…</p>}
       {!loading && error && (
         <p className="error">Failed to load metrics: {error.message}</p>
       )}
       {!loading && !error && !steps.length && (
-        <p className="empty-state">No funnel data yet.</p>
+        <p className="empty-state">まだデータがありません。</p>
       )}
 
       {!loading && !error && steps.length > 0 && (
@@ -44,11 +44,11 @@ export default function FunnelPanel({
                 onClick={onToggleInsight}
                 data-tooltip={TOOLTIPS.INSIGHT_TOGGLE}
               >
-                {insightOpen ? "Insightを閉じる" : "Insightを表示"}
+                {insightOpen ? "Hide Insight" : "Show Insight"}
               </button>
             </div>
           )}
-          <h2 className="section-title" data-tooltip={TOOLTIPS.FUNNEL_STEPS_TITLE}>Funnel Steps_RealTime</h2>
+          <h2 className="section-title" data-tooltip={TOOLTIPS.FUNNEL_STEPS_TITLE}>ファネルステップ（リアルタイム）</h2>
         </div>
       )}
 
@@ -66,14 +66,14 @@ export default function FunnelPanel({
 
       {!loading && !error && steps.length > 0 && (
         <section className="avg-panel" data-tooltip={TOOLTIPS.AVG_PANEL}>
-          <div className="avg-title">ステップ別平均レイテンシ</div>
+          <div className="avg-title">ステップ別 平均レイテンシ</div>
           <div className="avg-grid">
             {steps.map((step, idx) => (
               <div key={`avg-${step.step ?? idx}`} className="avg-card">
                 <div className="avg-name">{step.name}</div>
                 <div className="avg-values">
-                  <span>System {step.avg_system_latency_ms ?? 0}ms</span>
-                  <span>User {step.avg_user_think_time_ms ?? 0}ms</span>
+                  <span>システム {step.avg_system_latency_ms ?? 0}ms</span>
+                  <span>ユーザー {step.avg_user_think_time_ms ?? 0}ms</span>
                 </div>
               </div>
             ))}
@@ -94,15 +94,15 @@ export default function FunnelPanel({
               <div className="kpi-value">{kpis.total_users ?? 0}</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_CONVERSION}>
-              <div className="kpi-label">全体購入到達率</div>
+              <div className="kpi-label">全体転換率</div>
               <div className="kpi-value">{kpis.overall_conversion ?? 0}%</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_EXIT}>
-              <div className="kpi-label">離脱数</div>
+              <div className="kpi-label">離脱回数</div>
               <div className="kpi-value">{exitCount}</div>
             </div>
             <div className="kpi-card" data-tooltip={TOOLTIPS.KPI_WORST}>
-              <div className="kpi-label">要注意ステップ</div>
+              <div className="kpi-label">最遅ステップ</div>
               <div className="kpi-value">{worstLabel}</div>
             </div>
           </div>
