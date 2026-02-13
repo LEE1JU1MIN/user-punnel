@@ -41,7 +41,7 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
         <div className="row-top-right">
           {isRisk && <span className="risk-badge" data-tooltip={TOOLTIPS.RISK_BADGE}>Risk</span>}
           <div className="conversion" data-tooltip={TOOLTIPS.CONVERSION_RATE}>
-            {step.conversion_rate}% <span className="conversion-label">到達率</span>
+            {step.conversion_rate}% <span className="conversion-label">購入到達率</span>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
       <div className="row-bottom">
         <div className="row-stats">
           <div className="stat">
-            <div className="stat-label" data-tooltip={TOOLTIPS.USERS_LABEL}>Users</div>
+            <div className="stat-label" data-tooltip={TOOLTIPS.USERS_LABEL}>User数</div>
             <div className="stat-value">{step.total_users ?? 0}</div>
           </div>
           <div className="stat">

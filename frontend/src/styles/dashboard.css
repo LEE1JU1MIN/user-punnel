@@ -454,10 +454,10 @@
 }
 
 .latency-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
 }
 
 .latency-value {
@@ -696,7 +696,7 @@
 }
 
 .insight-block-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #f8fafc;
   margin-bottom: 10px;
@@ -710,7 +710,7 @@
   display: grid;
   gap: 6px;
   color: #e2e8f0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.7;
 }
 

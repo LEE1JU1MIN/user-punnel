@@ -16,11 +16,11 @@ import { FUNNEL_STEPS } from "../constants/funnelSteps";
 import "../styles/simulator.css";
 
 const TITLES = {
-  home: "Discover",
-  product: "Product",
-  cart: "Checkout",
-  success: "Done",
-  exit: "Exit",
+  home: "ホーム",
+  product: "商品",
+  cart: "決済",
+  success: "完了",
+  exit: "離脱",
 };
 
 const PREV = {
@@ -36,6 +36,7 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
   const [screen, setScreen] = useState(defaultStep);
   const [history, setHistory] = useState([defaultStep]);
   const [loading, setLoading] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(true);
   const startTimeRef = useRef(Date.now());
   const userIdRef = useRef(createUserId());
   const prevScreenRef = useRef(defaultStep);
@@ -181,6 +182,41 @@ export default function SimulatorPage({ onRefresh, onScreenChange, onSendLatency
 
   return (
     <div className="sim-wrap">
+      <div className="sim-frame-title">ショッピングモールシミュレーター</div>
+      <button
+        type="button"
+        className="sim-guide-toggle"
+        onClick={() => setGuideOpen((v) => !v)}
+      >
+        {guideOpen ? "操作ガイドを閉じる" : "操作ガイドを表示"}
+      </button>
+      {guideOpen && (
+        <div className="sim-help">
+          <div className="sim-help-title">操作ガイド</div>
+          <div className="sim-help-note">
+            左側のスマホ画面は「ショッピングモールの体験」を再現するシミュレーターです。操作すると、
+            右側のダッシュボードに離脱率・転換率・レイテンシがリアルタイムで反映されます。
+          </div>
+          <div className="sim-help-grid">
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 1</div>
+              <p>左の画面で「ホーム → 商品 → カート → 購入」の流れをたどります。まず商品を選びます。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 2</div>
+              <p>右上の × を押すと「離脱」をシミュレーションできます。どのページで離脱が起きたかが記録されます。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 3</div>
+              <p>右のダッシュボードで「どのページで離脱が多いか」「どこが遅いか」を確認します。</p>
+            </div>
+            <div className="sim-help-item">
+              <div className="sim-help-label">ステップ 4</div>
+              <p>レイテンシバーの中央線は平均値です。右（緑）は速い、左（赤）は遅いことを示します。</p>
+            </div>
+          </div>
+        </div>
+      )}
       <MobileFrame>
         <div className="sim-shell">
           <StatusBar />

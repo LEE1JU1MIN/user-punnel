@@ -1,3 +1,5 @@
+import watchImage from "../../../../asset/watch_image.png";
+
 export default function HomePage({ onNavigate, loading }) {
   return (
     <div className="sim-page">
@@ -9,14 +11,18 @@ export default function HomePage({ onNavigate, loading }) {
           <button disabled={loading} onClick={() => onNavigate("product")} className="primary"
           > 詳細を見る </button>
         </div>
-        <div className="hero-blob" />
+        <div className="hero-blob">
+          <img src={watchImage} alt="ミニマルウォッチ" />
+        </div>
       </div>
 
       <div className="list">
         <h3>人気商品</h3>
         {[1, 2, 3].map((i) => (
           <div key={i} className="card" onClick={() => onNavigate("product")}>
-            <div className="thumb" />
+            <div className="thumb">
+              <img src={watchImage} alt={`ミニマルウォッチ #${i}`} />
+            </div>
             <div className="card-body">
               <div className="card-title">ミニマルウォッチ #{i}</div>
               <div className="muted">ブラックレザー · 40mm</div>

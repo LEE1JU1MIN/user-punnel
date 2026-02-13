@@ -9,7 +9,7 @@ export const TOOLTIPS = {
   FUNNEL_STEPS_TITLE: "ステップ別の指標一覧",
   STEP_NAME: "ファネルステップ",
   RISK_BADGE: "離脱率が最も高いステップ",
-  CONVERSION_RATE: "ホームからの到達率",
+  CONVERSION_RATE: "ホームからの購入到達率",
   USERS_LABEL: "このステップに到達したユーザー数",
   DROPOFF_LABEL: "このステップで離脱した割合",
   DROPOFF_ROW: "このステップで離脱した割合",
