@@ -1,8 +1,9 @@
+import { memo, useMemo } from "react";
 import FunnelRow from "./FunnelRow";
 import DropoffChart from "./DropoffChart";
 import { TOOLTIPS } from "../../constants/tooltips";
 
-export default function FunnelPanel({
+function FunnelPanel({
   data,
   loading,
   error,
@@ -12,14 +13,17 @@ export default function FunnelPanel({
 }) {
   const steps = data?.steps || [];
   const kpis = data?.kpis || {};
+
   const worstLabel = kpis.worst_step
     ? `${kpis.worst_step.charAt(0).toUpperCase()}${kpis.worst_step.slice(1)}`
     : "-";
+
   const exitCount = kpis.exit_count ?? 0;
-  const maxDropOff =
-    steps.length > 0
-      ? Math.max(...steps.map((s) => s.drop_off_rate ?? 0))
-      : 0;
+
+  const maxDropOff = useMemo(
+    () => (steps.length > 0 ? Math.max(...steps.map((s) => s.drop_off_rate ?? 0)) : 0),
+    [steps]
+  );
 
   return (
     <section className="funnel-panel">
@@ -52,17 +56,18 @@ export default function FunnelPanel({
         </div>
       )}
 
-      {!loading && !error && steps.map((step, idx) => (
-        <FunnelRow
-          key={step.step ?? idx}
-          index={idx + 1}
-          step={step}
-          isActive={currentScreen === step.step}
-          avgSystem={step.avg_system_latency_ms ?? 0}
-          avgUser={step.avg_user_think_time_ms ?? 0}
-          isRisk={maxDropOff > 0 && (step.drop_off_rate ?? 0) === maxDropOff}
-        />
-      ))}
+      {!loading && !error &&
+        steps.map((step, idx) => (
+          <FunnelRow
+            key={step.step ?? idx}
+            index={idx + 1}
+            step={step}
+            isActive={currentScreen === step.step}
+            avgSystem={step.avg_system_latency_ms ?? 0}
+            avgUser={step.avg_user_think_time_ms ?? 0}
+            isRisk={maxDropOff > 0 && (step.drop_off_rate ?? 0) === maxDropOff}
+          />
+        ))}
 
       {!loading && !error && steps.length > 0 && (
         <section className="avg-panel" data-tooltip={TOOLTIPS.AVG_PANEL}>
@@ -81,9 +86,7 @@ export default function FunnelPanel({
         </section>
       )}
 
-      {!loading && !error && steps.length > 0 && (
-        <DropoffChart steps={steps} />
-      )}
+      {!loading && !error && steps.length > 0 && <DropoffChart steps={steps} />}
 
       {!loading && !error && steps.length > 0 && (
         <section className="kpi-panel">
@@ -108,7 +111,8 @@ export default function FunnelPanel({
           </div>
         </section>
       )}
-
     </section>
   );
 }
+
+export default memo(FunnelPanel);

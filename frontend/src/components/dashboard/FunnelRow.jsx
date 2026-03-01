@@ -1,3 +1,4 @@
+import { memo } from "react";
 import LatencyBar from "./LatencyBar";
 import { TOOLTIPS } from "../../constants/tooltips";
 
@@ -8,26 +9,27 @@ const STEP_LABELS = {
   success: "購入完了",
 };
 
-export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, isRisk }) {
+function getStatus(value, avg) {
+  if (avg <= 0) return "normal";
+  if (value > avg * 1.2) return "slow";
+  if (value < avg * 0.8) return "fast";
+  return "normal";
+}
+
+function getDelta(value, avg) {
+  if (avg <= 0) return null;
+  return Math.round(((avg - value) / avg) * 100);
+}
+
+function FunnelRowComponent({ index, step, isActive, avgSystem, avgUser, isRisk }) {
   const stepLabel = STEP_LABELS[step.step] ?? step.name;
   const systemMs = step.system_latency_ms ?? 0;
   const userMs = step.user_think_time_ms ?? 0;
-  const systemStatus =
-    avgSystem > 0 && systemMs > avgSystem * 1.2
-      ? "slow"
-      : avgSystem > 0 && systemMs < avgSystem * 0.8
-        ? "fast"
-        : "normal";
-  const userStatus =
-    avgUser > 0 && userMs > avgUser * 1.2
-      ? "slow"
-      : avgUser > 0 && userMs < avgUser * 0.8
-        ? "fast"
-        : "normal";
-  const systemDelta =
-    avgSystem > 0 ? Math.round(((avgSystem - systemMs) / avgSystem) * 100) : null;
-  const userDelta =
-    avgUser > 0 ? Math.round(((avgUser - userMs) / avgUser) * 100) : null;
+
+  const systemStatus = getStatus(systemMs, avgSystem);
+  const userStatus = getStatus(userMs, avgUser);
+  const systemDelta = getDelta(systemMs, avgSystem);
+  const userDelta = getDelta(userMs, avgUser);
 
   return (
     <div className={`funnel-row ${isActive ? "active" : ""}`}>
@@ -71,3 +73,34 @@ export default function FunnelRow({ index, step, isActive, avgSystem, avgUser, i
     </div>
   );
 }
+
+function areEqual(prevProps, nextProps) {
+  if (
+    prevProps.index !== nextProps.index ||
+    prevProps.isActive !== nextProps.isActive ||
+    prevProps.avgSystem !== nextProps.avgSystem ||
+    prevProps.avgUser !== nextProps.avgUser ||
+    prevProps.isRisk !== nextProps.isRisk
+  ) {
+    return false;
+  }
+
+  const prevStep = prevProps.step;
+  const nextStep = nextProps.step;
+
+  return (
+    prevStep.step === nextStep.step &&
+    prevStep.name === nextStep.name &&
+    prevStep.conversion_rate === nextStep.conversion_rate &&
+    prevStep.system_latency_ms === nextStep.system_latency_ms &&
+    prevStep.user_think_time_ms === nextStep.user_think_time_ms &&
+    prevStep.avg_system_latency_ms === nextStep.avg_system_latency_ms &&
+    prevStep.avg_user_think_time_ms === nextStep.avg_user_think_time_ms &&
+    prevStep.total_users === nextStep.total_users &&
+    prevStep.drop_off_rate === nextStep.drop_off_rate
+  );
+}
+
+const FunnelRow = memo(FunnelRowComponent, areEqual);
+
+export default FunnelRow;
