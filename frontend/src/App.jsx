@@ -1,7 +1,7 @@
 import AppLayout from "./layout/AppLayout";
 import SplitLayout from "./layout/SplitLayout";
 import SimulatorPage from "./page/SimulatorPage";
-import { useEffect, useState, Suspense, lazy } from "react";
+import { useEffect, useState, Suspense, lazy, useMemo } from "react";
 import useFunnelMetrics from "./hooks/useFunnelMetrics";
 import useLiveFunnel from "./hooks/useLiveFunnel";
 import { clearEvents } from "./services/eventApi";
@@ -13,9 +13,14 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState("home");
   const { liveData, send, reset, connected } = useLiveFunnel();
   const mergedData = liveData ?? data;
+  const dashboardLoading = liveData ? false : loading;
   const [showDashboard, setShowDashboard] = useState(false);
   const [clearing, setClearing] = useState(false);
   const [insightOpen, setInsightOpen] = useState(false);
+  const simulatorRefresh = useMemo(() => {
+    if (connected) return undefined;
+    return refresh;
+  }, [connected, refresh]);
 
   useEffect(() => {
     const t = setTimeout(() => setShowDashboard(true), 250);
@@ -25,13 +30,19 @@ export default function App() {
   return (
     <AppLayout>
       <SplitLayout
-        left={<SimulatorPage onRefresh={refresh} onScreenChange={setCurrentScreen} onSendLatency={send} />}
+        left={
+          <SimulatorPage
+            onRefresh={simulatorRefresh}
+            onScreenChange={setCurrentScreen}
+            onSendLatency={send}
+          />
+        }
         right={
           showDashboard ? (
             <Suspense fallback={<div className="dashboard-skeleton">読み込み中…（1〜3分ほどお待ちください）</div>}>
                 <DashboardPage
                   data={mergedData}
-                  loading={loading}
+                  loading={dashboardLoading}
                   error={error}
                   currentScreen={currentScreen}
                   wsConnected={connected}
